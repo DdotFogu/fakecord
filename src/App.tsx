@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Creator from "./pages/Creator";
+import Fakecord from "./pages/Fakecord";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 
 import defaultPfp from "./assets/images/default-pfp.webp";
 
@@ -132,13 +134,14 @@ function App() {
 
 
   return (
-    <>
+    <Router>
       <UserContext.Provider value={{ users, addUser, removeUser, setUserName, setUserDisplay, setUserPfpUrl, msgs, addMsg, removeMsg, setMsgContent, setMsgOwner, setMsgTime}}>
-        <div>
-          <Creator/>
-        </div>
+        <Routes>
+          <Route path="/" element={<Creator/>} />
+          <Route path="/fakecord" element={<Fakecord/>} />
+        </Routes>
       </UserContext.Provider>
-    </>
+    </Router>
   )
 }
 
