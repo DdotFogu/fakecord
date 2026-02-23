@@ -19,7 +19,15 @@ class User {
   }
 }
 
-const UserContext = createContext<any>(null);
+const UserContext = createContext<any>({
+  users: {},
+  addUser: () => {},
+  removeUser: (_id: number) => {},
+  setUserName: (_id: number, _name: string) => {},
+  setUserDisplay: (_id: number, _displayname: string) => {},
+  setUserPfpUrl: (_id: number, _pfpUrl: string) => {},
+  addMsg: () => {},
+});
 
 export const useUsers = () => {
   return useContext(UserContext);
@@ -48,6 +56,24 @@ function App() {
     setUsers(newUsers);
   }
 
+  const setUserName = (id: number, username: string) => {
+    const newUsers = {...users};
+    newUsers[id].username = username;
+    setUsers(newUsers);
+  }
+
+  const setUserDisplay = (id: number, displayname: string) => {
+    const newUsers = {...users};
+    newUsers[id].displayname = displayname;
+    setUsers(newUsers);
+  }
+
+  const setUserPfpUrl = (id: number, pfpUrl: string) => {
+    const newUsers = {...users};
+    newUsers[id].pfpUrl = pfpUrl;
+    setUsers(newUsers);
+  }
+
   useEffect(() => {
     console.log(users);
   }, [users]);
@@ -60,7 +86,7 @@ function App() {
 
   return (
     <>
-      <UserContext.Provider value={{ users, addUser, removeUser, addMsg }}>
+      <UserContext.Provider value={{ users, addUser, removeUser, setUserName, setUserDisplay, setUserPfpUrl, addMsg }}>
       <div>
         <Fakecord/>
       </div>

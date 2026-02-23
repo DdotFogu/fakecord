@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useUsers } from '../App';
 import type { User } from '../App';
 
@@ -6,21 +5,21 @@ type detailProps = {
   user: User;
 };
 
-function userDetails({user}: detailProps) {
-    const { removeUser } = useUsers();
+function UserDetails({user}: detailProps) {
+    const { removeUser, setUserName, setUserDisplay, setUserPfpUrl} = useUsers();
 
-    const [displayName, setDisplayName] = useState(user.displayname);
-    const [username, setUsername] = useState(user.username);
-    const [pfp, setPFP] = useState(user.pfpUrl);
+    const displayName = user.displayName;
+    const username = user.username;
+    const pfpUrl = user.pfpUrl;
     const id = user.id;
 
     return (
     <>
     <div className='flex flex-row gap-4 border w-fit items-center'>
         <img 
-        src={pfp} 
+        src={pfpUrl} 
         alt="User PFP"
-        className='w-16 h-16 rounded-full ' 
+        className='w-16 h-16 rounded-full '
         />
 
         <form className="">
@@ -29,7 +28,7 @@ function userDetails({user}: detailProps) {
             type="text" 
             name="display" 
             value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
+            onChange={(e) => setUserDisplay(id, e.target.value)}
             />
 
             <br />
@@ -39,7 +38,7 @@ function userDetails({user}: detailProps) {
             type="text" 
             name="user" 
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setUserName(id, e.target.value)}
             />
 
             <br />  
@@ -52,7 +51,7 @@ function userDetails({user}: detailProps) {
                 onChange={(e) => {
                     if (e.target.files && e.target.files[0]) {
                         const fileURL = URL.createObjectURL(e.target.files[0]);
-                        setPFP(fileURL);
+                        setUserPfpUrl(id, fileURL);
                     }
                 }}
             />
@@ -70,4 +69,4 @@ function userDetails({user}: detailProps) {
   )
 }
 
-export default userDetails
+export default UserDetails
