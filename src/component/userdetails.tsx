@@ -8,7 +8,7 @@ type detailProps = {
 function UserDetails({user}: detailProps) {
     const { removeUser, setUserName, setUserDisplay, setUserPfpUrl} = useUsers();
 
-    const displayName = user.displayName;
+    const displayName = user.displayname;
     const username = user.username;
     const pfpUrl = user.pfpUrl;
     const id = user.id;
@@ -23,7 +23,7 @@ function UserDetails({user}: detailProps) {
         />
 
         <form className="">
-            <label htmlFor="display">User Display:</label>
+            <label htmlFor="display">Display: </label>
             <input 
             type="text" 
             name="display" 
@@ -33,7 +33,7 @@ function UserDetails({user}: detailProps) {
 
             <br />
 
-            <label htmlFor="user">User Username:</label>
+            <label htmlFor="user">Username: </label>
             <input 
             type="text" 
             name="user" 
@@ -43,7 +43,7 @@ function UserDetails({user}: detailProps) {
 
             <br />  
 
-            <label >User PFP:</label>
+            <label >PFP: </label>
             <input 
                 type="file" 
                 name="image" 
