@@ -41,7 +41,7 @@ function Creator() {
             className="flex flex-col gap-1"
             >
               {msgs.map((msg : Msg) => (
-                <MsgDetails key={msg.owner.id} msg={msg}/>
+                <MsgDetails key={msgs.indexOf(msg)} msg={msg}/>
               ))}
             </div> 
             <button
