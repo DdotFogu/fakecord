@@ -18,6 +18,8 @@ function Fakecord() {
 
   // TODO CREATE VARS FOR ALL COLORS
   // TODO ADD GG SANS FONT
+  // TODO FIX THE COLORING
+  // TODO REFACTOR ALL THIS AFTER PROTOTYPE
 
   return (
     <>
@@ -48,7 +50,7 @@ function Fakecord() {
         {/* Content area */}
         <div className="flex-1 flex">
           {/* User Bar */}
-          <div className="w-103 h-15 bg-dark-3 absolute bottom-0 m-2 rounded-lg border border-light-1 flex flex-row p-[6px] gap-2 justify-center items-center">
+          <div className="w-103 h-15 bg-dark-3 absolute bottom-0 m-2 rounded-lg border border-dark-1 flex flex-row p-[6px] gap-2 justify-center items-center">
             <div className="w-full h-full bg-dark-3 rounded-md flex justify-start items-center p-1 gap-2">
               <img
                 src={defaultpfp}
@@ -85,10 +87,10 @@ function Fakecord() {
           </aside>
           
 
-          <main className="flex-1 bg-dark-2 border-l border-t border-light-1">
+          <main className="flex-1 bg-dark-2 border-l border-t border-dark-1">
             <aside className="bg-dark-3 w-[19vw] h-full flex flex-col  items-center">
               <div className="flex justify-center items-center w-full h-fit p-2">
-                <div className="bg-dark-2 w-full h-[3.5vh] text-center text-white text-sm font-light font-gg flex justify-center items-center rounded-lg border border-light-1">
+                <div className="bg-dark-2 w-full h-[3.1vh] text-center text-white text-sm font-light font-gg flex justify-center items-center rounded-lg border border-dark-1">
                   <p>Find or start an conversation</p>
                 </div>
               </div>
@@ -118,8 +120,27 @@ function Fakecord() {
             </aside>
           </main>
 
-          <div className="bg-dark-1 w-full h-13 border-y border-light-1 flex flex-row items-center justify-end px-3">
-            <div className="bg-dark-2 w-[244px] h-[32px] rounded-lg text-white border border-light-1">Search typeeshitt33</div>
+          <div className="bg-dark-1 w-full h-12 border-y border-dark-1 flex flex-row items-center justify-end px-2 py-2 pl-5 gap-4">
+            <div className="mr-auto w-fit h-full flex items-center justify-center">
+              <img
+                src={defaultpfp}
+                width={20}
+                height={20}
+                className="object-cover rounded-3xl"
+              />
+              <p className="text-white font-gg font-semibold ml-2">chairguy</p>
+            </div>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#abacb2"><path d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12Z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#abacb2"><path d="M240-320h320v-22q0-44-44-71t-116-27q-72 0-116 27t-44 71v22Zm160-160q33 0 56.5-23.5T480-560q0-33-23.5-56.5T400-640q-33 0-56.5 23.5T320-560q0 33 23.5 56.5T400-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h480q33 0 56.5 23.5T720-720v180l160-160v440L720-420v180q0 33-23.5 56.5T640-160H160Z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#abacb2"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Z"/></svg>            
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#abacb2"><path d="M500-482q29-32 44.5-73t15.5-85q0-44-15.5-85T500-798q60 8 100 53t40 105q0 60-40 105t-100 53Zm220 322v-120q0-36-16-68.5T662-406q51 18 94.5 46.5T800-280v120h-80Zm80-280v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Zm-593-87q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47ZM0-160v-112q0-34 17.5-62.5T64-378q62-31 126-46.5T320-440q66 0 130 15.5T576-378q29 15 46.5 43.5T640-272v112H0Z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm146.5-204.5Q340-521 340-580t40.5-99.5Q421-720 480-720t99.5 40.5Q620-639 620-580t-40.5 99.5Q539-440 480-440t-99.5-40.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg>
+            
+            <div className="bg-dark-2 w-[244px] h-[32px] rounded-lg text-light-1 border border-dark-1 text-left items-center flex text-sm pl-2">
+              Search typeeshitt33
+              <svg className="ml-auto" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#8f9097"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+            </div>
           </div>
         </div>
     </div>
