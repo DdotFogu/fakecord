@@ -15,7 +15,7 @@ function DmTab({bgColor = "#282b30"}: DmTabProps) {
       width={32} 
       className="rounded-2xl object-cover" />
 
-      <p className="ml-2 text-white text-sm font-semibold">new user</p>
+      <p className="ml-2.5 text-gray-300 font-semibold">chairguy</p>
     </div>
   );
 }
