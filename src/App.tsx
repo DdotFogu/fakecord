@@ -98,7 +98,7 @@ function App() {
   }, [users]);
 
   const [msgs, setMsgs] = useState<Array<Msg>>([new Msg(users[1], new Date(), "New Message")]);
-
+  
   const addMsg = () => {  
     const msg = new Msg(users[1], new Date(), "New Message");
     setMsgs([...msgs, msg]);

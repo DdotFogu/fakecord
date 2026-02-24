@@ -1,9 +1,15 @@
 import { useUsers } from "../App";
 import ServerButton from "../components/serverbutton";
+import Tab from "../components/tab";
+import DmTab from "../components/dmtab";
 
 import add from "../assets/images/add.webp";
 import download from "../assets/images/download.webp"
 import discover from "../assets/images/discover.webp"
+import person from "../assets/images/person.webp"
+import quests from "../assets/images/quests.webp"
+import shop from "../assets/images/shop.webp"
+import nitro from "../assets/images/nitro.webp"
 
 function Fakecord() {
   const { users } = useUsers();
@@ -13,7 +19,7 @@ function Fakecord() {
 
   return (
     <>
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col bg-dark-3">
       {/* Top Bar */}
       <header className="w-full h-[3.29vh] bg-dark-3 flex items-center px-3">
         <div className="flex-1 flex items-center justify-center gap-2 h-full">       
@@ -48,8 +54,39 @@ function Fakecord() {
             <ServerButton serverIcon={download} iconSize={24}/>
           </aside>
 
-          <main className="flex-1 bg-dark-3 border-l border-t border-light-1">
-            
+          
+
+          <main className="flex-1 bg-dark-2 border-l border-t border-light-1 ">
+            <aside className="bg-dark-3 w-[19vw] h-full flex flex-col  items-center">
+              <div className="flex justify-center items-center w-full h-fit p-2">
+                <div className="bg-dark-2 w-full h-[3.5vh] text-center text-white text-sm font-light font-gg flex justify-center items-center rounded-lg">
+                  <p>Find or start an conversation</p>
+                </div>
+              </div>
+              
+              <hr className="border-0 bg-dark-1 h-px w-full" />
+              
+              <div className="w-full p-2 pb-3">
+                <Tab bgColor="#282b30" serverIcon={person} iconSize={24 } height={38} text="Friends"/>
+                <Tab bgColor="#282b30" serverIcon={nitro} iconSize={24 } height={38} text="Nitro"/>
+                <Tab bgColor="#282b30" serverIcon={shop} iconSize={24 } height={38} text="Shop"/>
+                <Tab bgColor="#282b30" serverIcon={quests} iconSize={24 } height={38} text="Quests"/>
+              </div>
+
+              <hr className="border-0 bg-dark-1 h-px w-[95%]"/>
+
+              <span className="w-full pt-4">
+                <div className="ml-4 mr-2 flex text-left text-gray-400 font-light text-sm">
+                  Direct Messages
+                  <svg className="ml-auto" xmlns="http://www.w3.org/2000/svg" height="17px" viewBox="0 -960 960 960" width="24px" fill="#99a1af"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+                </div>
+              </span>
+
+              <div className="w-full h-full px-2 mt-1">
+                <DmTab bgColor="#38393E"/>
+              </div>
+              
+            </aside>
           </main>
         </div>
     </div>
