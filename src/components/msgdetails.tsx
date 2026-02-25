@@ -23,7 +23,7 @@ function MsgDetails({msg}: detailProps) {
                 }}
             >
                     {Object.entries(users).map(([id, user]: [string, User]) => (
-                            <option key={id} value={id}>
+                            <option key={id} value={id}>~
                             {user.displayname} ({user.username})
                             </option>
                     ))}

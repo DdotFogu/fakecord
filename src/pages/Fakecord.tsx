@@ -122,7 +122,7 @@ function Fakecord() {
           </main>
 
           <div className="w-full">
-            <div className="bg-dark-3 w-full h-12 border-y border-l border-dark-1 flex flex-row items-center justify-end px-2 py-2 pl-5 gap-4">
+            <div className="bg-dark-3 w-full h-12 border-y border-dark-1 flex flex-row items-center justify-end px-2 py-2 pl-5 gap-4">
               <div className="mr-auto w-fit h-full flex items-center justify-center">
                 <img
                   src={defaultpfp}
@@ -147,10 +147,12 @@ function Fakecord() {
             
             <div className="flex flex-row h-full">
               <div className="bg-dark-4 w-full h-full">
+                <div className="bg-white h-14.5 w-[98%] relative top-206 left-3 rounded-lg">
 
+                </div>
               </div>
 
-              <div className="w-[445px] h-full bg-dark-3 ml-auto">
+              <div className="w-[445px] h-full bg-dark-3 ml-auto flex flex-col">
                 <div className="w-full h-[120px] bg-orange-200">
                   <div className="h-fit w-full flex justify-end items-end p-2 gap-2">
                     <div className="bg-black h-8 w-8 p-1 rounded-2xl flex justify-center items-center opacity-50">
@@ -171,15 +173,20 @@ function Fakecord() {
 
                 </div>
 
-                <div className="w-full h-full my-11.5 mx-4 flex flex-col gap-3">
-                  <div>
+                <div className="w-full flex-1 my-11.5 flex flex-col gap-3">
+                  <div className="mx-4">
                     <h1 className="text-white font-bold text-lg">chairguy</h1>
                     <h2 className="text-white text-sm">typeeshiit33</h2>
                   </div>
 
-                  <div className="w-[90%] h-fit bg-dark-2 rounded-lg flex flex-col px-3 py-3 gap-2">
+                  <div className="mx-4 w-[90%] h-fit bg-dark-2 rounded-lg flex flex-col px-3 py-3 gap-2">
                     <h1 className="text-white text-xs font-semibold">Member Since</h1>
                     <h2 className="text-white text-xs font-semibold">June 9, 2020</h2>
+                  </div>
+
+                  <div className="w-full h-fit flex flex-col mt-auto mb-[14px]">
+                    <hr className="mb-3 border-dark-1"/>
+                    <h1 className="text-white w-full text-center text-sm">View Full Profile</h1>
                   </div>
                 </div>
 
