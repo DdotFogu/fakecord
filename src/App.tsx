@@ -56,12 +56,11 @@ function App() {
   const [users, setUsers] = useState<Record<number, User>>({[1]: new User("newuser", "New User", 1, false)})
 
   const addUser = () => {
-    // TODO THIS IS TEMP, WHEN REMOVING ALL ABOVES IDS SHOULD DECREMENT
+    // TODO USERS SHOULD BE AN ARRAY INSTEAD OF MAP
     let newId = 1;
     while (users[newId]) {
       newId++;
     }
-    // TODO this is bad
     
     console.log("adding user with id:", newId);
     setUsers({...users, [newId]: new User("newuser", "New User", newId)})

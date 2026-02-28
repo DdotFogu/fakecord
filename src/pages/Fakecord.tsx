@@ -2,7 +2,8 @@ import { useUsers } from "../App";
 import ServerButton from "../components/serverbutton";
 import Tab from "../components/tab";
 import DmTab from "../components/dmtab";
-import msg from "../components/msg";
+import Msg from "../components/msg";
+import Dateruler from "../components/dateruler";
 
 import add from "../assets/images/add.webp";
 import download from "../assets/images/download.webp"
@@ -13,12 +14,10 @@ import shop from "../assets/images/shop.webp"
 import nitro from "../assets/images/nitro.webp"
 
 import defaultpfp from "../assets/images/default-pfp.webp"
-import wumpus from "../assets/images/wumpus.png"
 
 function Fakecord() {
   const { users, msgs } = useUsers();
 
-  // TODO CREATE VARS FOR ALL COLORS
   // TODO ADD GG SANS FONT
   // TODO FIX THE COLORING
   // TODO REFACTOR ALL THIS AFTER PROTOTYPE
@@ -26,7 +25,7 @@ function Fakecord() {
 
   return (
     <>
-    <div className="h-screen flex flex-col ">
+    <div className="h-screen w-screen flex flex-col overflow-x-hidden">
       {/* Top Bar */}
         <header className="w-full h-[3.29vh] bg-dark-3 flex items-center px-3">
           <div className="flex-1 flex items-center justify-center gap-2 h-full">       
@@ -146,23 +145,28 @@ function Fakecord() {
             </div>
             
             <div className="flex flex-row flex-1">
-              <div className="bg-dark-1 w-full flex flex-col justify-center">
+              <div className="bg-dark-1 w-full flex flex-col">
                 {/* MESSAGES */}
-                <div className="w-full h-full flex flex-col justify-end gap-2 px-5 mb-1">
-                  <img
-                  src={defaultpfp}
-                  width={80}
-                  height={80}
-                  className="object-cover rounded-full "
-                  />
-                  <h1 className="font-bold text-3xl text-white">chairguy</h1>
-                  <h2 className="text-white text-2xl">typeeshiit33</h2>
-                  <h3 className="text-white">This is the beginning of your direct message history with <b>chairguy</b></h3>
-                  <div className="text-white flex flex-row items-center text-sm gap-2">
-                    <h3 className="mr-6">No servers in common</h3>
-                    <h3 className="bg-primary px-3 py-1.5 text-sm font-semibold rounded-lg">Add Friend</h3>
-                    <h3 className="bg-dark-2 px-3 py-1.5 text-sm font-semibold rounded-lg">Block</h3>
+                <div className="w-full flex flex-col px-5 mb-1">
+                  <div className="flex flex-col mb-3.5">
+                    <img
+                    src={defaultpfp}
+                    width={80}
+                    height={80}
+                    className="object-cover rounded-full mb-2 "
+                    />
+                    <h1 className="font-bold text-3xl text-white mb-5">chairguy</h1>
+                    <h2 className="text-white text-2xl mb-5">typeeshiit33</h2>
+                    <h3 className="text-white mb-5">This is the beginning of your direct message history with <b>chairguy</b></h3>
+                    <div className="text-white flex flex-row items-center text-sm gap-2">
+                      <h3 className="mr-6">No servers in common</h3>
+                      <h3 className="bg-primary px-3 py-1.5 text-sm font-semibold rounded-lg">Add Friend</h3>
+                      <h3 className="bg-dark-2 px-3 py-1.5 text-sm font-semibold rounded-lg">Block</h3>
+                    </div>
                   </div>
+
+                  <Dateruler date={new Date(2026, 1, 28)}/>
+                  <Msg owner={users[1]} content={"This is a message!"} date={new Date(2026, 1, 28, 12, 30)}/>
                 </div>
 
                 <div className="mx-1.5 mb-1.5 mt-auto bg-dark-2 h-17 w-[99%] rounded-lg border border-dark-1 flex flex-row items-center justify-end px-3.5 gap-4">
