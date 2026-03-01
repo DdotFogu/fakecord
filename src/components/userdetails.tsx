@@ -6,12 +6,12 @@ type detailProps = {
 };
 
 function UserDetails({user}: detailProps) {
-    const { removeUser, setUserName, setUserDisplay, setUserPfpUrl} = useUsers();
+    const { users, removeUser, setUserName, setUserDisplay, setUserPfpUrl} = useUsers();
 
     const displayName = user.displayname;
     const username = user.username;
     const pfpUrl = user.pfpUrl;
-    const id = user.id;
+    const id = users.indexOf(user);
 
     return (
     <>
@@ -22,8 +22,8 @@ function UserDetails({user}: detailProps) {
         className='w-16 h-16 rounded-full '
         />
 
-        <form className="">
-            <label htmlFor="display">Display: </label>
+        <div>
+            <h1>Display: </h1>
             <input 
             type="text" 
             name="display" 
@@ -33,7 +33,7 @@ function UserDetails({user}: detailProps) {
 
             <br />
 
-            <label htmlFor="user">Username: </label>
+            <h1>Username: </h1>
             <input 
             type="text" 
             name="user" 
@@ -43,7 +43,7 @@ function UserDetails({user}: detailProps) {
 
             <br />  
 
-            <label >PFP: </label>
+            <h1>PFP: </h1>
             <input 
                 type="file" 
                 name="image" 
@@ -55,7 +55,7 @@ function UserDetails({user}: detailProps) {
                     }
                 }}
             />
-        </form>
+        </div>
         
         {user.removeabled && (
             <button

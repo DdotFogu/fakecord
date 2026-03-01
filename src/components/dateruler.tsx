@@ -8,7 +8,7 @@ function dateruler({date = new Date(2025, 6, 4)}: daterulerProps) {
   
   return (
     <>
-    <div className="flex flex-row items-center justify-center gap-1">
+    <div className="flex flex-row items-center justify-center gap-1 w-full">
       <hr className="w-full border-dark-2"/>
       <h1 className="text-white text-xs w-fit whitespace-nowrap">{month} {date.getDate()}, {date.getFullYear()}</h1>
       <hr className="w-full border-dark-2"/>

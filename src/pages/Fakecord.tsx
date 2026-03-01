@@ -1,9 +1,15 @@
+import React, { Fragment } from "react";
+
 import { useUsers } from "../App";
 import ServerButton from "../components/serverbutton";
 import Tab from "../components/tab";
 import DmTab from "../components/dmtab";
-import Msg from "../components/msg";
+import MsgContent from "../components/msg";
 import Dateruler from "../components/dateruler";
+
+import type { Server } from "../App";
+import type { User } from "../App";
+import type { Msg } from "../App";
 
 import add from "../assets/images/add.webp";
 import download from "../assets/images/download.webp"
@@ -16,7 +22,7 @@ import nitro from "../assets/images/nitro.webp"
 import defaultpfp from "../assets/images/default-pfp.webp"
 
 function Fakecord() {
-  const { users, msgs } = useUsers();
+  const { users, msgs, servers } = useUsers();
 
   // TODO ADD GG SANS FONT
   // TODO FIX THE COLORING
@@ -41,13 +47,13 @@ function Fakecord() {
       <footer className="footer-root">
         <div className="w-full h-full rounded-md flex justify-start items-center p-1 gap-2">
           <img
-            src={defaultpfp}
+            src={users[0].pfpUrl}
             width={32}
             height={32}
             className="pfp-img"
           />
           <span className="flex flex-col my-1">
-            <p className="text-white font-gg font-semibold">Ddot</p>
+            <p className="text-white font-gg font-semibold">{users[0].displayname}</p>
             <p className="text-white text-xs font-gg align-top">Online</p>
           </span>
         </div>
@@ -74,6 +80,11 @@ function Fakecord() {
           <div className="servers-root">
             <ServerButton iconSize={34} bgColor="#5865F2"/>
             <hr className="border-0 bg-dark-1 h-px w-8" />
+
+            {servers.map((server : Server) => (
+                <ServerButton serverIcon={server.pfpUrl} iconSize={40}/>
+              ))}
+
             <ServerButton serverIcon={add} iconSize={24}/>
             <ServerButton serverIcon={discover} iconSize={24}/>
             <ServerButton serverIcon={download} iconSize={24}/>
@@ -102,7 +113,7 @@ function Fakecord() {
             </span>
 
             <span className="w-full h-full px-2 mt-1 flex flex-col">
-              <DmTab bgColor="#38393E"/>
+              <DmTab bgColor="#38393E" imgUrl={users[1].pfpUrl} name={users[1].displayname}/>
             </span>
           </div>
         </aside>
@@ -113,12 +124,12 @@ function Fakecord() {
           <header className="bg-dark-3 w-full h-12 border-y border-dark-1 flex flex-row items-center justify-end px-2 py-2 pl-3 gap-4">
             <span className="mr-auto w-fit h-full flex items-center justify-center">
               <img
-                src={defaultpfp}
+                src={users[1].pfpUrl}
                 width={20}
                 height={20}
                 className="object-cover rounded-3xl"
               />
-              <p className="text-white font-gg font-semibold ml-2">chairguy</p>
+              <p className="text-white font-gg font-semibold ml-2">{users[1].displayname}</p>
             </span>
             
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#abacb2"><path d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12Z"/></svg>
@@ -137,26 +148,51 @@ function Fakecord() {
           <div className="flex flex-row flex-1">
             <div className="bg-dark-1 w-full flex flex-col">
               {/* Messages */}
-              <div className="w-full flex flex-col px-5 mb-1">
+              <div className="w-full h-full flex flex-col items-start justify-end px-3">
                 <span className="flex flex-col mb-3.5">
                   <img
-                  src={defaultpfp}
+                  src={users[1].pfpUrl}
                   width={80}
                   height={80}
                   className="object-cover rounded-full mb-2 "
                   />
-                  <h1 className="font-bold text-3xl text-white mb-5">chairguy</h1>
-                  <h2 className="text-white text-2xl mb-5">typeeshiit33</h2>
-                  <h3 className="text-white mb-5">This is the beginning of your direct message history with <b>chairguy</b></h3>
+                  <h1 className="font-bold text-3xl text-white mb-5">{users[1].displayname}</h1>
+                  <h2 className="text-white text-2xl mb-5">{users[1].username}</h2>
+                  <h3 className="text-white mb-5">This is the beginning of your direct message history with <b>{users[1].displayname}</b></h3>
                   <div className="text-white flex flex-row items-center text-sm gap-2">
                     <h3 className="mr-6">No servers in common</h3>
                     <h3 className="bg-primary px-3 py-1.5 text-sm font-semibold rounded-lg">Add Friend</h3>
                     <h3 className="bg-dark-2 px-3 py-1.5 text-sm font-semibold rounded-lg">Block</h3>
                   </div>
                 </span>
+                
+                {
+                  msgs.map((msg: Msg, index: number) => {
+                    const prevMsg = index > 0 ? msgs[index - 1] : null;
 
-                <Dateruler date={new Date(2026, 1, 28)}/>
-                <Msg owner={users[1]} content={"This is a message!"} date={new Date(2026, 1, 28, 12, 30)}/>
+                    const showDateRule =
+                      !prevMsg ||
+                      prevMsg.time.getDate() !== msg.time.getDate() ||
+                      prevMsg.time.getMonth() !== msg.time.getMonth() ||
+                      prevMsg.time.getFullYear() !== msg.time.getFullYear();
+                    
+                    const showUserRule = !prevMsg ? true :
+                      prevMsg.owner != msg.owner ||
+                      Math.abs(prevMsg.time - msg.time) >= 300000;
+
+                    return (
+                      <Fragment key={msg.id}>
+                        {showDateRule && <Dateruler date={msg.time} />}
+                        <MsgContent
+                          owner={msg.owner}
+                          content={msg.content}
+                          date={msg.time}
+                          showUser={showUserRule}
+                        />
+                      </Fragment>
+                    );
+                  })
+                }
               </div>
 
               {/* Message Footer */}
@@ -164,7 +200,7 @@ function Fakecord() {
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#99a1af"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
                 <input 
                 type="text"
-                placeholder="Message @chairguy"
+                placeholder={"Message @" + users[1].displayname}
                 className="bg-transparent outline-none text-white mr-auto grow" />
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M160-80v-440H80v-240h208q-5-9-6.5-19t-1.5-21q0-50 35-85t85-35q23 0 43 8.5t37 23.5q17-16 37-24t43-8q50 0 85 35t35 85q0 11-2 20.5t-6 19.5h208v240h-80v440H160Zm371.5-748.5Q520-817 520-800t11.5 28.5Q543-760 560-760t28.5-11.5Q600-783 600-800t-11.5-28.5Q577-840 560-840t-28.5 11.5ZM360-800q0 17 11.5 28.5T400-760q17 0 28.5-11.5T440-800q0-17-11.5-28.5T400-840q-17 0-28.5 11.5T360-800ZM160-680v80h280v-80H160Zm280 520v-360H240v360h200Zm80 0h200v-360H520v360Zm280-440v-80H520v80h280Z"/></svg>
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm240-240h60v-240h-60v240Zm-160 0h80q17 0 28.5-11.5T400-400v-80h-60v60h-40v-120h100v-20q0-17-11.5-28.5T360-600h-80q-17 0-28.5 11.5T240-560v160q0 17 11.5 28.5T280-360Zm280 0h60v-80h80v-60h-80v-40h120v-60H560v240Z"/></svg>
@@ -183,7 +219,7 @@ function Fakecord() {
                 </div>
                 
                 <img
-                  src={defaultpfp}
+                  src={users[1].pfpUrl}
                   width={80}
                   height={80}
                   className="object-cover rounded-full relative left-4 top-6"
@@ -193,8 +229,8 @@ function Fakecord() {
 
               <div className="w-full flex-1  flex flex-col gap-3">
                 <span className="mx-4 mt-11">
-                  <h1 className="text-white font-bold text-lg">chairguy</h1>
-                  <h2 className="text-white text-sm">typeeshiit33</h2>
+                  <h1 className="text-white font-bold text-lg">{users[1].displayname}</h1>
+                  <h2 className="text-white text-sm">{users[1].username}</h2>
                 </span>
 
                 <span className="mx-4 w-[90%] h-fit bg-dark-2 rounded-lg flex flex-col px-3 py-3 gap-2">

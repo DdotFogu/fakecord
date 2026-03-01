@@ -23,9 +23,9 @@ function MsgDetails({msg}: detailProps) {
                 }}
             >
                     {Object.entries(users).map(([id, user]: [string, User]) => (
-                            <option key={id} value={id}>~
-                            {user.displayname} ({user.username})
-                            </option>
+                        <option key={id} value={id}>~
+                        {user.displayname} ({user.username})
+                        </option>
                     ))}
             </select>
         
@@ -38,6 +38,7 @@ function MsgDetails({msg}: detailProps) {
             }}
             />
         
+        {/* SETTING TIME WITH THE BUILT IN TIME SELECTION FUCKING BLOWS LOL */}
         <label>time: </label>
             <input
             type="datetime-local"
