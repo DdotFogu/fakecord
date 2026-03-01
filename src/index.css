@@ -1,5 +1,10 @@
 @import url('https://fonts.cdnfonts.com/css/gg-sans-2');
 @import "tailwindcss";
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
 
 @theme {
   --color-primary: #5865F2;
@@ -9,4 +14,34 @@
   --color-dark-2: #36393e;
   --color-dark-3: #282b30;
   --color-dark-4: #1e2124;
+}
+
+@layer components {
+  .header-root {
+    @apply w-full h-[32px] bg-dark-3 flex items-center px-3
+  }
+
+  .footer-root{
+    @apply w-104 h-15 bg-dark-3 absolute bottom-0 m-2 rounded-lg border border-dark-1 flex flex-row p-[6px] gap-2 justify-center items-center pr-[14px]
+  }
+
+  .footer-btn{
+    @apply w-fit h-[80%] rounded-lg flex items-center
+  }
+
+  .pfp-img{
+    @apply object-cover rounded-3xl
+  }
+
+  .find-convo{
+    @apply m-2 p-2 bg-dark-2 w-[95%] h-[3.1vh] text-center text-white text-sm font-light rounded-lg border border-dark-1 flex justify-center items-center
+  }
+
+  .servers-root{
+    @apply bg-dark-3 w-[3.8vw] h-full flex flex-col items-center gap-2
+  }
+
+  .common-ruler{
+    @apply border-0 bg-dark-1 h-px
+  }
 }
