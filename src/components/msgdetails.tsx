@@ -1,6 +1,4 @@
-import { useUsers } from '../App';
-import type { Msg } from '../App';
-import type { User } from '../App';
+import { Msg, useUsers, User } from '../App';
 
 type detailProps = {
   msg: Msg;
@@ -22,11 +20,11 @@ function MsgDetails({msg}: detailProps) {
                     if (owner !== undefined) setMsgOwner(msgs.indexOf(msg), owner);
                 }}
             >
-                    {Object.entries(users).map(([id, user]: [string, User]) => (
-                        <option key={id} value={id}>~
+                {users.map((user: User) => (
+                     <option key={user.id} value={user.id}>
                         {user.displayname} ({user.username})
-                        </option>
-                    ))}
+                    </option>
+                ))}
             </select>
         
         <label>message: </label>
@@ -38,7 +36,6 @@ function MsgDetails({msg}: detailProps) {
             }}
             />
         
-        {/* SETTING TIME WITH THE BUILT IN TIME SELECTION FUCKING BLOWS LOL */}
         <label>time: </label>
             <input
             type="datetime-local"

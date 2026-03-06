@@ -1,17 +1,18 @@
-import { useUsers } from '../App';
-import type { User } from '../App';
+import { useUsers, User } from '../App';
 
 type detailProps = {
   user: User;
 };
 
 function UserDetails({user}: detailProps) {
-    const { users, removeUser, setUserName, setUserDisplay, setUserPfpUrl} = useUsers();
+    const { removeUser, setUserName, setUserDisplay, setUserPfpUrl, setUserDate, setUserBio } = useUsers();
 
     const displayName = user.displayname;
     const username = user.username;
     const pfpUrl = user.pfpUrl;
-    const id = users.indexOf(user);
+    const bio = user.bio;
+    const dateJoined = user.dateJoined.toISOString().slice(0, 16);
+    const id = user.id;
 
     return (
     <>
@@ -25,20 +26,20 @@ function UserDetails({user}: detailProps) {
         <div>
             <h1>Display: </h1>
             <input 
-            type="text" 
-            name="display" 
-            value={displayName}
-            onChange={(e) => setUserDisplay(id, e.target.value)}
+                type="text" 
+                name="display" 
+                value={displayName}
+                onChange={(e) => setUserDisplay(id, e.target.value)}
             />
 
             <br />
 
             <h1>Username: </h1>
             <input 
-            type="text" 
-            name="user" 
-            value={username}
-            onChange={(e) => setUserName(id, e.target.value)}
+                type="text" 
+                name="user" 
+                value={username}
+                onChange={(e) => setUserName(id, e.target.value)}
             />
 
             <br />  
@@ -54,6 +55,24 @@ function UserDetails({user}: detailProps) {
                         setUserPfpUrl(id, fileURL);
                     }
                 }}
+            />
+
+            <h1>Date Joined: </h1>
+            <input
+                type="datetime-local"
+                value={dateJoined}
+                onChange={(e) => {
+                    const newDate = new Date(e.target.value);
+                    setUserDate(id, newDate);
+                }}
+            />
+
+            <h1>Bio: </h1>
+            <input 
+                type="text" 
+                name="display" 
+                value={bio}
+                onChange={(e) => setUserBio(id, e.target.value)}
             />
         </div>
         

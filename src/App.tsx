@@ -1,38 +1,42 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import Creator from "./pages/Creator";
-import Fakecord from "./pages/Fakecord";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 
-import defaultPfp from "./assets/images/default-pfp.webp";
+import Creator from "./pages/Creator";
+import Fakecord from "./pages/Fakecord";
 
-class User {
+export class User {
+  id: number;
   username: string;
   displayname: string;
   pfpUrl: string;
+  dateJoined: Date;
+  bio: string;
   removeabled : boolean = true;
 
-  constructor(username: string, displayname: string, id: number, removeabled: boolean = true) {
-    this.username = username;
-    this.displayname = displayname;
-    this.pfpUrl = defaultPfp;
+  constructor(id: number, removeabled: boolean = true) {
+    this.username = 'new user';
+    this.displayname = 'new display';
+    this.pfpUrl = '';
+    this.dateJoined = new Date
+    this.bio = 'new bio';
+
     this.id = id;
     this.removeabled = removeabled;
   }
 }
-
-class Msg {
+export class Msg {
   owner: User;
   time: Date;
   content: string;
 
-  constructor(owner: User, time: Date,content: string) {
+  constructor(owner: User, time: Date, content: string) {
     this.owner = owner;
     this.content = content;
     this.time = time;
   }
 }
 
-class Server {
+export class Server {
   name: string;
   pfpUrl: string;
 
@@ -49,8 +53,10 @@ const UserContext = createContext<any>({
   setUserName: (_index: number, _name: string) => {},
   setUserDisplay: (_index: number, _displayname: string) => {},
   setUserPfpUrl: (_index: number, _pfpUrl: string) => {},
+  setUserDate: (_index: number, _date: Date) => {},
+  setUserBio: (_index: number, _bio: string) => {},
   msgs: [],
-  addMsg: () => {},
+  addMsg: (_msg : Msg) => {},
   removeMsg: (_index: number) => {},
   setMsgContent: (_index: number, _content: string) => {},
   setMsgOwner: (_index: number, _owner: User) => {},
@@ -60,6 +66,10 @@ const UserContext = createContext<any>({
   removeServer: (_index: number) => {},
   setServerName: (_index: number, name: string) => {},
   setServerPfpUrl: (_index: number, pfpUrl: string) => {},
+  dms: [],
+  addDms: () => {},
+  removeDms: (_index: number) => {},
+  removeDmsWithUser: (_user: User) => {}
 });
 
 export const useUsers = () => {
@@ -68,11 +78,11 @@ export const useUsers = () => {
 
 function App() {
   const [users, setUsers] = useState<Array<User>>([
-    new User("newuser", "New User", 0, false),
+    new User(0, false),
   ])
 
   const addUser = () => {
-    const user = new User("newuser", "New User", users.length, true);
+    const user = new User(users.length, true);
     setUsers([...users, user]);
   }
 
@@ -100,14 +110,26 @@ function App() {
     setUsers(newUsers);
   }
 
+  const setUserDate = (_index: number, date: Date) => {
+    const newUsers = [...users];
+    newUsers[_index].dateJoined = date;
+    setUsers(newUsers);
+  }
+
+  const setUserBio = (_index: number, bio: string) => {
+    const newUsers = [...users];
+    newUsers[_index].bio = bio;
+    setUsers(newUsers);
+  }
+
   useEffect(() => {
     console.log(users);
   }, [users]);
 
+
   const [msgs, setMsgs] = useState<Array<Msg>>([new Msg(users[0], new Date(), "New Message")]);
   
-  const addMsg = () => {  
-    const msg = new Msg(users[1], new Date(), "New Message");
+  const addMsg = ( msg : Msg = new Msg(users[1], new Date(), "New Message")) => {  
     setMsgs([...msgs, msg]);
   }
 
@@ -139,10 +161,10 @@ function App() {
     console.log(msgs);
   }, [msgs]);
 
-  const [servers, setServers] = useState<Array<Server>>([new Server("ServerName", defaultPfp)]);
+  const [servers, setServers] = useState<Array<Server>>([new Server("ServerName", "")]);
 
   const addServer = () => {
-    const server = new Server("New Message", defaultPfp);
+    const server = new Server("New Message", "");
     setServers([...servers, server]);
   }
 
@@ -168,9 +190,30 @@ function App() {
     console.log(servers);
   }, [servers]);
 
+  const [dms, setDms] = useState<Array<User>>([])
+
+  const addDms = (user : User) => {
+    setDms([...dms, user]);
+  }
+
+  const removeDms = (index: number) => {
+    const newDms = [...dms];
+    newDms.splice(index, 1);
+    setDms(newDms);
+  }
+  
+  useEffect(() => {
+    console.log(dms);
+  }, [dms]);
+
   return (
     <Router>
-      <UserContext.Provider value={{ users, addUser, removeUser, setUserName, setUserDisplay, setUserPfpUrl, msgs, addMsg, removeMsg, setMsgContent, setMsgOwner, setMsgTime, servers, addServer, removeServer, setServerName, setServerPfpUrl}}>
+      <UserContext.Provider value={{
+          users, addUser, removeUser, setUserName, setUserDisplay, setUserPfpUrl, setUserDate, setUserBio, 
+          msgs, addMsg, removeMsg, setMsgContent, setMsgOwner, setMsgTime, 
+          servers, addServer, removeServer, setServerName, setServerPfpUrl, 
+          dms, addDms, removeDms
+        }}>
         <Routes>
           <Route path="/" element={<Creator/>} />
           <Route path="/fakecord" element={<Fakecord/>} />

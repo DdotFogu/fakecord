@@ -8,21 +8,26 @@ html, body, #root {
 
 @theme {
   --color-primary: #5865F2;
-  --color-light-2: #abacb2;
-  --color-light-1: #8f9097;
-  --color-dark-1: #424549;
-  --color-dark-2: #36393e;
-  --color-dark-3: #282b30;
-  --color-dark-4: #1e2124;
+  --color-light-1: #9D9EA5;
+  --color-light-2: #222226;
+  --color-light-3: #1E1E20;
+  --color-gray-1: #73747D;
+  --color-gray-2: #121213;
+  --color-gray-3: #131416;
+  --color-gray-4: #1E1F22;
+  --color-gray-5: #2D2E32;
+  --color-dark-1: #000000;
+  --color-dark-2: #070709;
+  --color-dark-3: #0C0C0E;
 }
 
 @layer components {
   .header-root {
-    @apply w-full h-[32px] bg-dark-3 flex items-center px-3
+    @apply w-full h-[32px] flex items-center px-3 bg-dark-1
   }
 
   .footer-root{
-    @apply w-104 h-15 bg-dark-3 absolute bottom-0 m-2 rounded-lg border border-dark-1 flex flex-row p-[6px] gap-2 justify-center items-center pr-[14px]
+    @apply w-104 h-15 absolute bottom-0 m-2 rounded-lg border border-light-2 flex flex-row p-[6px] gap-2 justify-center items-center pr-[14px] bg-dark-3
   }
 
   .footer-btn{
@@ -34,14 +39,59 @@ html, body, #root {
   }
 
   .find-convo{
-    @apply m-2 p-2 bg-dark-2 w-[95%] h-[3.1vh] text-center text-white text-sm font-light rounded-lg border border-dark-1 flex justify-center items-center
+    @apply m-2 p-2 w-[95%] h-[29.67px] min-h-[29.67px] text-center text-white bg-gray-2 text-sm font-light rounded-lg border border-light-3 flex justify-center items-center
   }
 
   .servers-root{
-    @apply bg-dark-3 w-[3.8vw] h-full flex flex-col items-center gap-2
+    @apply w-[72.96px] h-full min-h-full flex flex-col items-center gap-2 bg-dark-1 min-w-[72.96px] overflow-y-auto pb-19 mb-17
   }
 
   .common-ruler{
-    @apply border-0 bg-dark-1 h-px
+    @apply border-0 h-px  bg-light-3 self-center
+  }
+
+  .tab-title{
+    @apply text-gray-1 font-semibold flex p-1.5 gap-3 items-center rounded-lg
+  }
+
+  .message-footer{
+    @apply mb-2 mt-auto h-[60px] min-h-[60px] w-[98%] rounded-lg border border-light-3 bg-gray-3 flex flex-row items-center justify-end px-3.5 gap-4 self-center
+  }
+
+  .dms-root{
+    @apply flex-1 border-x border-t bg-dark-1 border-light-3 w-[364px] h-full flex flex-col items-center
+  }
+
+  .info-panel-root{
+    @apply w-[340px] xl:flex flex-col h-full bg-gray-3 min-w-[340px] sm:hidden
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: rgba(255, 255, 255, 0)
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #1F1F21;
+    border-radius: 100vh;
+    border: 3px solid #f6f7ed00;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #ffffff00;
   }
 }

@@ -6,10 +6,10 @@ type DmTabProps = {
   name?: string;
 };
 
-function DmTab({bgColor = "#282b30", imgUrl, name}: DmTabProps) {
+function DmTab({bgColor = "#FFFFFF", imgUrl, name}: DmTabProps) {
   return (
     <div
-      className="w-full h-[2.188vw] rounded-lg flex flex=row items-center px-2"
+      className="w-full h-[42.01px] rounded-lg flex flex=row items-center px-2 min-h-[42.01px]"
       style={{ backgroundColor: bgColor }}
     >
       <img 

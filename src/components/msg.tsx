@@ -1,4 +1,4 @@
-import type { User } from '../App'; 
+import { User } from "../App";
 
 type msgProps = { 
   owner : User 
@@ -10,7 +10,7 @@ type msgProps = {
 function msg({ owner, content, date, showUser = true}: msgProps) {
   return (
     <>
-      <div className='flex justify-start items-center gap-4' style={{marginTop : showUser ? 8 : 0}}>
+      <div className='flex gap-4 wrap-anywhere' style={{marginTop : showUser ? 12 : 0}}>
         {showUser && 
           <img 
             src={owner ? owner.pfpUrl : ""}
@@ -24,7 +24,7 @@ function msg({ owner, content, date, showUser = true}: msgProps) {
           {showUser && 
             <span className='flex flex-row gap-2 items-baseline'>
               <h1 className='m-0 font-semibold'>{owner ? owner.displayname : "NO DISPLAY"}</h1>
-              <h2 className='m-0 font-light text-xs'>{date.getDate()}/{date.getMonth()}/{date.getFullYear().toString().slice(2)}, {date.getHours() % 12 || 12}:{date.getMinutes().toString().padStart(2, '0')} {date.getHours() >= 12 ? 'PM' : 'AM'}</h2>
+              <h2 className='m-0 font-light text-xs wrap-break-word'>{date.getDate()}/{date.getMonth()}/{date.getFullYear().toString().slice(2)}, {date.getHours() % 12 || 12}:{date.getMinutes().toString().padStart(2, '0')} {date.getHours() >= 12 ? 'PM' : 'AM'}</h2>
             </span>
           }
           <p style={{ marginLeft : !showUser ? 56 : 0}}>{content}</p>
