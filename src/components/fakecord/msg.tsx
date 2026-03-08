@@ -1,4 +1,4 @@
-import { User } from "../App";
+import { User } from "../../App";
 
 type msgProps = { 
   owner : User 

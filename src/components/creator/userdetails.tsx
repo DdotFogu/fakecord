@@ -1,4 +1,4 @@
-import { useUsers, User } from '../App';
+import { useUsers, User } from '../../App';
 
 type detailProps = {
   user: User;
@@ -12,7 +12,6 @@ function UserDetails({user}: detailProps) {
     const pfpUrl = user.pfpUrl;
     const bio = user.bio;
     const dateJoined = user.dateJoined.toISOString().slice(0, 16);
-    const dm = user.dm;
     const idx = users.indexOf(user);
 
     return (

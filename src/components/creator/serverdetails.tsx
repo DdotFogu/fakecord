@@ -1,5 +1,5 @@
-import type { Server } from "../App";
-import { useUsers } from "../App";
+import type { Server } from "../../App";
+import { useUsers } from "../../App";
 
 type detailProps = {
   server: Server;

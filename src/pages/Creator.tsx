@@ -1,9 +1,7 @@
-import { useUsers,  } from "../App";
-import { useState } from "react";
-import UserDetails from "../components/userdetails";
-import MsgDetails from "../components/msgdetails";
-import ServerDetails from "../components/serverdetails";
-import DmDetails from "../components/dmsdetails";
+import { useUsers } from "../App";
+import UserDetails from "../components/creator/userdetails";
+import MsgDetails from "../components/creator/msgdetails";
+import ServerDetails from "../components/creator/serverdetails";
 
 import { Msg } from "../App";
 import { User } from "../App";

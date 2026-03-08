@@ -2,10 +2,10 @@ import { Fragment } from "react";
 import { Server, Msg, User, useUsers } from "../App";
 import { Link } from "react-router-dom";
 
-import ServerButton from "../components/serverbutton";
-import DmTab from "../components/dmtab"; 
-import MsgContent from "../components/msg";
-import Dateruler from "../components/dateruler";
+import ServerButton from "../components/fakecord/serverbutton";
+import DmTab from "../components/fakecord/dmtab"; 
+import MsgContent from "../components/fakecord/msg";
+import Dateruler from "../components/fakecord/dateruler";
 import add from "../assets/images/add.webp";
 import download from "../assets/images/download.webp"
 import discover from "../assets/images/discover.webp"
@@ -183,7 +183,7 @@ function Fakecord() {
 
                     const showUserRule = !prevMsg ? true :
                       prevMsg.owner != msg.owner ||
-                      Math.abs(prevMsg.time - msg.time) >= 300000;
+                      Math.abs(prevMsg.time.getTime() - msg.time.getTime()) >= 300000;
 
                     return (
                       <Fragment key={msgs.indexOf(msg)}>

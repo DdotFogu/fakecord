@@ -5,7 +5,6 @@ import Creator from "./pages/Creator";
 import Fakecord from "./pages/Fakecord";
 
 import defaultPfp from "./assets/images/default-pfp.webp";
-import type { UserConfig } from "vite";
 
 export class User {
   username: string;
@@ -68,8 +67,8 @@ const UserContext = createContext<any>({
   servers: [],
   addServer: [],
   removeServer: (_index: number) => {},
-  setServerName: (_index: number, name: string) => {},
-  setServerPfpUrl: (_index: number, pfpUrl: string) => {},
+  setServerName: (_index: number, _name: string) => {},
+  setServerPfpUrl: (_index: number, _pfpUrl: string) => {},
 });
 
 export const useUsers = () => {

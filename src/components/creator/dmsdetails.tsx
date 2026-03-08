@@ -1,6 +1,6 @@
-import { useUsers } from "../App";
+import { useUsers } from "../../App";
 
-import { User } from "../App";
+import { User } from "../../App";
 
 type detailProps = {
   owner: User

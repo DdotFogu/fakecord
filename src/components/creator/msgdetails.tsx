@@ -1,4 +1,4 @@
-import { Msg, useUsers, User } from '../App';
+import { Msg, useUsers, User } from '../../App';
 
 type detailProps = {
   msg: Msg;
