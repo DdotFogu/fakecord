@@ -11,7 +11,7 @@ import download from "../assets/images/download.webp"
 import discover from "../assets/images/discover.webp"
 
 function Fakecord() {
-  const { users, msgs, servers, dms, addMsg } = useUsers();
+  const { users, msgs, servers, addMsg } = useUsers();
 
   return (
     <>
@@ -80,12 +80,11 @@ function Fakecord() {
           
           {/* Dms */}
           <div className="dms-root">
-            <span className="find-convo">
-              Find or start an conversation
-            </span>
+            <div className="w-full flex border-b border-b-gray-4">
+              <span className="find-convo">Find or start an conversation</span>
+            </div>
             
-            <span className="overflow-y-auto w-full h-full scrollbar mb-17">
-              <hr className="common-ruler w-full" />
+            <span className="overflow-y-auto w-full h-full no-scrollbar mb-17">
 
               <div className="w-full h-fit p-2 flex flex-col gap-1 mt-1">
                 <span className="tab-title">
@@ -114,11 +113,10 @@ function Fakecord() {
               </span>
 
               <span className="w-full h-full px-2 mt-1 flex flex-col gap-1">
-                {dms.map((user: User) => {
-                  console.log(user)
-                  return(
-                    <DmTab bgColor={dms.indexOf(user) === 0 ? "#38393E" : "#FFFFF"} imgUrl={user.pfpUrl} name={user.displayname} key={dms.indexOf(user)}/>  
-                  )                
+                {users.map((user: User, index: number) => {
+                  const showRule : boolean = user.dm;
+                  
+                  if(showRule){return(<DmTab bgColor={index === 1 ? "#38393E" : "#FFFFF"} imgUrl={user.pfpUrl} name={user.displayname} key={index}/>)}
                 })}
               </span>
             </span>
@@ -206,19 +204,18 @@ function Fakecord() {
               <footer className="message-footer">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5 "><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
                 <input
-                onKeyDown={(event) => {
-                  const rule : boolean = event.key == "Enter" &&
-                  event.currentTarget.value.length > 0
+                  onKeyDown={(event) => {
+                    const rule : boolean = event.key == "Enter" &&
+                    event.currentTarget.value.length > 0
 
-
-                  if (rule) {
-                    addMsg(new Msg(users[0], new Date(), event.currentTarget.value))
-                    event.currentTarget.value = ""
-                  }
+                    if (rule) {
+                      addMsg(new Msg(users[0], event.currentTarget.value))
+                      event.currentTarget.value = ""
+                    }
                 }}
-                type="text"
-                placeholder={"Message @" + users[1].displayname}
-                className="outline-none text-white grow"
+                  type="text"
+                  placeholder={"Message @" + users[1].displayname}
+                  className="outline-none text-white grow"
                 />
                 
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm240-240h60v-240h-60v240Zm-160 0h80q17 0 28.5-11.5T400-400v-80h-60v60h-40v-120h100v-20q0-17-11.5-28.5T360-600h-80q-17 0-28.5 11.5T240-560v160q0 17 11.5 28.5T280-360Zm280 0h60v-80h80v-60h-80v-40h120v-60H560v240Z"/></svg>

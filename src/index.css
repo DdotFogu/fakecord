@@ -4,6 +4,7 @@
 
 html, body, #root {
   height: 100%;
+  
 }
 
 @theme {
@@ -39,7 +40,7 @@ html, body, #root {
   }
 
   .find-convo{
-    @apply m-2 p-2 w-[95%] h-[29.67px] min-h-[29.67px] text-center text-white bg-gray-2 text-sm font-light rounded-lg border border-light-3 flex justify-center items-center
+    @apply m-2 p-2 w-full h-[29.67px] min-h-[29.67px] text-center text-white bg-gray-2 text-sm font-light rounded-lg border border-light-3 flex justify-center items-center
   }
 
   .servers-root{
@@ -93,5 +94,9 @@ html, body, #root {
 
   .scrollbar::-webkit-scrollbar-thumb:hover {
     background: #ffffff00;
+  }
+
+  .custom-date-input::-webkit-calendar-picker-indicator {
+    filter: invert(1); 
   }
 }

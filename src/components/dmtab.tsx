@@ -17,7 +17,7 @@ function DmTab({bgColor = "#FFFFFF", imgUrl, name}: DmTabProps) {
       width={32} 
       className="rounded-2xl object-cover" />
 
-      <p className="ml-2.5 text-gray-300 font-semibold">{name ? name : "NO NAME"}</p>
+      <p className="ml-2.5 text-gray-300 font-semibold">{name ? name : "NO DISPLAY"}</p>
     </div>
   );
 }
