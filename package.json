@@ -1,7 +1,7 @@
 {
   "name": "fakecord",
-  "homepage": "https://DdotFogu.github.io/fakecord/",
-  "private": true,
+  "homepage": "https://ddotfogu.github.io/fakecord/",
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
