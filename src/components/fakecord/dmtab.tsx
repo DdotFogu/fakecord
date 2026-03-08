@@ -1,3 +1,5 @@
+import defaultIcon from "../assets/images/discord.webp";
+
 type DmTabProps = {
   bgColor?: string;
   imgUrl?: string;
@@ -11,7 +13,7 @@ function DmTab({bgColor = "#FFFFFF", imgUrl, name}: DmTabProps) {
       style={{ backgroundColor: bgColor }}
     >
       <img 
-      src={imgUrl} 
+      src={imgUrl ? imgUrl : defaultIcon} 
       width={32} 
       className="rounded-2xl object-cover" />
 
