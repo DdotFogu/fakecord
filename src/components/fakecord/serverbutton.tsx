@@ -1,4 +1,4 @@
-import defaultIcon from "../assets/images/discord.webp";
+import defaultIcon from "../../assets/images/discord.webp"
 
 type ServerButtonProps = {
   bgColor?: string;
