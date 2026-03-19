@@ -1,4 +1,4 @@
-import { User } from "../../App";
+import { User } from "../../types";
 
 type msgProps = { 
   owner : User 
@@ -10,21 +10,21 @@ type msgProps = {
 function msg({ owner, content, date, showUser = true}: msgProps) {
   return (
     <>
-      <div className='flex gap-4 wrap-anywhere' style={{marginTop : showUser ? 12 : 0}}>
+      <div className='msg-root' style={{marginTop : showUser ? 12 : 0}}>
         {showUser && 
           <img 
             src={owner ? owner.pfpUrl : ""}
             width={40}
             height={40}
-            className='rounded-full shrink-0 w-10 h-10'
+            className='msg-pfp'
           />
         }
 
-        <div className='flex flex-col text-white'>
+        <div className='msg-body'>
           {showUser && 
-            <span className='flex flex-row gap-2 items-baseline'>
-              <h1 className='m-0 font-semibold'>{owner ? owner.displayname : "NO DISPLAY"}</h1>
-              <h2 className='m-0 font-light text-xs wrap-break-word'>{date.getDate()}/{date.getMonth()}/{date.getFullYear().toString().slice(2)}, {date.getHours() % 12 || 12}:{date.getMinutes().toString().padStart(2, '0')} {date.getHours() >= 12 ? 'PM' : 'AM'}</h2>
+            <span className='msg-header'>
+              <h1 className='msg-displayname'>{owner ? owner.displayname : "NO DISPLAY"}</h1>
+              <h2 className='msg-timestamp'>{date.getDate()}/{date.getMonth()}/{date.getFullYear().toString().slice(2)}, {date.getHours() % 12 || 12}:{date.getMinutes().toString().padStart(2, '0')} {date.getHours() >= 12 ? 'PM' : 'AM'}</h2>
             </span>
           }
           <p style={{ marginLeft : !showUser ? 56 : 0}}>{content}</p>

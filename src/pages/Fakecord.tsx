@@ -1,11 +1,15 @@
+import "../styles/fakecord.css";
+
 import { Fragment } from "react";
-import { Server, Msg, User, useUsers } from "../App";
+import { useUsers } from "../context/AppContext";
+import { User, Msg, Server } from "../types";
 import { Link } from "react-router-dom";
 
 import ServerButton from "../components/fakecord/serverbutton";
 import DmTab from "../components/fakecord/dmtab"; 
 import MsgContent from "../components/fakecord/msg";
 import Dateruler from "../components/fakecord/dateruler";
+
 import add from "../assets/images/add.webp";
 import download from "../assets/images/download.webp"
 import discover from "../assets/images/discover.webp"
@@ -17,29 +21,29 @@ function Fakecord() {
     <>
       {/* Top Header */}
       <header className="header-root">
-        <span className="flex-1 flex items-center justify-center gap-2 h-full">       
+        <span className="header-title">       
           <svg width="14px" height="14px" viewBox="0 -28.5 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid"><g><path d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z" fill="#c5c6ca" fill-rule="nonzero" /></g></svg>
-          <p className="text-white font-gg font-light text-sm">Direct Messages</p>
+          <p className="header-text">Direct Messages</p>
         </span>
 
-        <span className="flex gap-5 absolute right-4">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm349-222q31-22 43-58h168v-360H200v360h168q12 36 43 58t69 22q38 0 69-22Z" /></svg>
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5"><path d="M513.5-254.5Q528-269 528-290t-14.5-35.5Q499-340 478-340t-35.5 14.5Q428-311 428-290t14.5 35.5Q457-240 478-240t35.5-14.5ZM442-394h74q0-33 7.5-52t42.5-52q26-26 41-49.5t15-56.5q0-56-41-86t-97-30q-57 0-92.5 30T342-618l66 26q5-18 22.5-39t53.5-21q32 0 48 17.5t16 38.5q0 20-12 37.5T506-526q-44 39-54 59t-10 73Zm38 314q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg>
+        <span className="header-icons">
+          <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm349-222q31-22 43-58h168v-360H200v360h168q12 36 43 58t69 22q38 0 69-22Z" /></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5"><path d="M513.5-254.5Q528-269 528-290t-14.5-35.5Q499-340 478-340t-35.5 14.5Q428-311 428-290t14.5 35.5Q457-240 478-240t35.5-14.5ZM442-394h74q0-33 7.5-52t42.5-52q26-26 41-49.5t15-56.5q0-56-41-86t-97-30q-57 0-92.5 30T342-618l66 26q5-18 22.5-39t53.5-21q32 0 48 17.5t16 38.5q0 20-12 37.5T506-526q-44 39-54 59t-10 73Zm38 314q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg>
         </span>
       </header>
 
       {/* User Footer */}
       <footer className="footer-root">
-        <div className="w-full h-full rounded-md flex justify-start items-center p-1 gap-2">
+        <div className="footer-user">
           <img
             src={users[0].pfpUrl}
             width={32}
             height={32}
             className="pfp-img"
           />
-          <span className="flex flex-col my-1">
-            <p className="text-white font-gg font-semibold">{users[0].displayname}</p>
-            <p className="text-white text-xs font-gg align-top">Online</p>
+          <span className="footer-user-info">
+            <p className="footer-user-name">{users[0].displayname}</p>
+            <p className="footer-user-status">Online</p>
           </span>
         </div>
 
@@ -58,16 +62,16 @@ function Fakecord() {
         </span>
       </footer>
       
-      <span className="flex h-[calc(100%-32px)]">
+      <span className="app-body">
         {/* Server and Dms */}
-        <aside className="flex">
+        <aside className="flex-row">
           {/* Servers */}
           <div className="servers-root no-scrollbar">
             <Link to="/">
               <ServerButton iconSize={34} bgColor="#5865F2"/>
             </Link>
 
-            <hr className="w-8 common-ruler"/>
+            <hr className="server-ruler common-ruler"/>
 
             {servers.map((server : Server) => (
                 <ServerButton serverIcon={server.pfpUrl} iconSize={40}/>
@@ -80,13 +84,16 @@ function Fakecord() {
           
           {/* Dms */}
           <div className="dms-root">
-            <div className="w-full flex border-b border-b-gray-4">
+            
+            <div className="dms-header">
               <span className="find-convo">Find or start an conversation</span>
             </div>
-            
-            <span className="overflow-y-auto w-full h-full no-scrollbar mb-17">
 
-              <div className="w-full h-fit p-2 flex flex-col gap-1 mt-1">
+            <hr className="common-ruler"/>
+            
+            <span className="dms-content no-scrollbar">
+
+              <div className="dms-nav">
                 <span className="tab-title">
                   <svg xmlns="http://www.w3.org/1999/xlink" x="0" y="0" className="icon__9293f" aria-hidden="true" role="img" width="20" height="20" fill="none" viewBox="0 0 20 20"><path fill="oklab(0.584697 0.0022063 -0.0119632)" d="M13 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"></path><path fill="oklab(0.584697 0.0022063 -0.0119632)" d="M3 5v-.75C3 3.56 3.56 3 4.25 3s1.24.56 1.33 1.25C6.12 8.65 9.46 12 13 12h1a8 8 0 0 1 8 8 2 2 0 0 1-2 2 .21.21 0 0 1-.2-.15 7.65 7.65 0 0 0-1.32-2.3c-.15-.2-.42-.06-.39.17l.25 2c.02.15-.1.28-.25.28H9a2 2 0 0 1-2-2v-2.22c0-1.57-.67-3.05-1.53-4.37A15.85 15.85 0 0 1 3 5Z"></path></svg>
                   Friends
@@ -105,14 +112,14 @@ function Fakecord() {
                 </span>
               </div>  
 
-              <hr className="common-ruler w-[96%] ml-2"/>
-
-              <span className="w-full pt-4 flex text-left text-gray-400 font-light text-sm px-4">
+              <hr className="common-ruler dm-ruler"/>
+              
+              <span className="dms-section-header">
                 Direct Messages
-                <svg className="ml-auto" xmlns="http://www.w3.org/2000/svg" height="17px" viewBox="0 -960 960 960" width="24px" fill="#99a1af"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+                <svg className="dms-section-icon" xmlns="http://www.w3.org/2000/svg" height="17px" viewBox="0 -960 960 960" width="24px" fill="#99a1af"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
               </span>
 
-              <span className="w-full h-full px-2 mt-1 flex flex-col gap-1">
+              <span className="dms-list">
                 {users.map((user: User, index: number) => {
                   const showRule : boolean = user.dm;
                   
@@ -124,17 +131,17 @@ function Fakecord() {
         </aside>
 
         {/* Main Content */}
-        <main className="w-full flex flex-col overflow-x-hidden">
+        <main className="chat-root">
           {/* Header Bar */}
-          <header className="w-full h-12 border-y border-light-3 bg-dark-1 flex flex-row items-center justify-end px-2 py-2 pl-3 gap-4">
-            <span className="mr-auto w-fit h-full flex items-center justify-center">
+          <header className="chat-header">
+            <span className="chat-header-user">
               <img
                 src={users[1].pfpUrl}
                 width={20}
                 height={20}
-                className="object-cover rounded-3xl"
+                className="chat-header-pfp"
               />
-              <p className="text-white font-gg font-semibold ml-2">{users[1].displayname}</p>
+              <p className="chat-header-name">{users[1].displayname}</p>
             </span>
             
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#abacb2"><path d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12Z"/></svg>
@@ -143,32 +150,32 @@ function Fakecord() {
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#abacb2"><path d="M500-482q29-32 44.5-73t15.5-85q0-44-15.5-85T500-798q60 8 100 53t40 105q0 60-40 105t-100 53Zm220 322v-120q0-36-16-68.5T662-406q51 18 94.5 46.5T800-280v120h-80Zm80-280v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Zm-593-87q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47ZM0-160v-112q0-34 17.5-62.5T64-378q62-31 126-46.5T320-440q66 0 130 15.5T576-378q29 15 46.5 43.5T640-272v112H0Z"/></svg>
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm146.5-204.5Q340-521 340-580t40.5-99.5Q421-720 480-720t99.5 40.5Q620-639 620-580t-40.5 99.5Q539-440 480-440t-99.5-40.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg>
               
-            <span className="w-[244px] h-[32px] rounded-lg text-gray-1 border border-light-3 text-left items-center flex text-sm pl-2 whitespace-nowrap">
+            <span className="chat-header-search">
               Search {users[1].username}
-              <svg className="ml-auto" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#8f9097"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+              <svg className="chat-header-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#8f9097"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
             </span>
           </header>
           
           {/* Messages and User Info*/}
-          <div className="flex flex-row flex-1 min-h-0">
-            <div className="w-full flex flex-col bg-dark-2 min-h-0">
+          <div className="chat-body">
+            <div className="chat-main">
               {/* Messages */}
-              <div className="flex-1 min-h-0 w-full flex flex-col px-3 mb-2 break-words overflow-y-auto no-scrollbar">
-                <div className="mt-auto flex flex-col">
-                  <span className="flex flex-col mb-3.5">
+              <div className="chat-messages">
+                <div className="chat-messages-inner">
+                  <span className="chat-intro">
                     <img
                       src={users[1].pfpUrl}
                       width={80}
                       height={80}
-                      className="object-cover rounded-full mb-2"
+                      className="chat-intro-pfp"
                     />
-                    <h1 className="font-bold text-3xl text-white mb-5">{users[1].displayname}</h1>
-                    <h2 className="text-white text-2xl mb-5">{users[1].username}</h2>
-                    <h3 className="text-white mb-5">This is the beginning of your direct message history with <b>{users[1].displayname}</b></h3>
-                    <div className="text-white flex flex-row items-center text-sm gap-2">
-                      <h3 className="mr-6">No servers in common</h3>
-                      <h3 className="bg-primary px-3 py-1.5 text-sm font-semibold rounded-lg">Add Friend</h3>
-                      <h3 className="px-3 py-1.5 text-sm font-semibold rounded-lg">Block</h3>
+                    <h1 className="chat-intro-name">{users[1].displayname}</h1>
+                    <h2 className="chat-intro-username">{users[1].username}</h2>
+                    <h3 className="chat-intro-desc">This is the beginning of your direct message history with <b>{users[1].displayname}</b></h3>
+                    <div className="chat-intro-actions">
+                      <h3 className="chat-intro-common">No servers in common</h3>
+                      <h3 className="chat-intro-add">Add Friend</h3>
+                      <h3 className="chat-intro-block">Block</h3>
                     </div>
                   </span>
 
@@ -215,7 +222,7 @@ function Fakecord() {
                 }}
                   type="text"
                   placeholder={"Message @" + users[1].displayname}
-                  className="outline-none text-white grow"
+                  className="msg-input"
                 />
                 
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm240-240h60v-240h-60v240Zm-160 0h80q17 0 28.5-11.5T400-400v-80h-60v60h-40v-120h100v-20q0-17-11.5-28.5T360-600h-80q-17 0-28.5 11.5T240-560v160q0 17 11.5 28.5T280-360Zm280 0h60v-80h80v-60h-80v-40h120v-60H560v240Z"/></svg>
@@ -227,42 +234,42 @@ function Fakecord() {
 
             {/* Info Panel */}
             <div className="info-panel-root">
-              <div className="w-full h-[120px] bg-black">
-                <div className="h-fit w-full flex justify-end items-end p-2 gap-2">
-                  <span className="bg-black h-8 w-8 p-1 rounded-2xl flex justify-center items-center opacity-50"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#FFFFFF"><path d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80ZM247-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Z"/></svg></span>
-                  <span className="bg-black h-8 w-8 p-1 rounded-2xl flex justify-center items-center opacity-50"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z"/></svg></span>
+              <div className="info-header">
+                <div className="info-button-wrapper">
+                  <span className="info-button "><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#FFFFFF"><path d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80ZM247-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Z"/></svg></span>
+                  <span className="info-button"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z"/></svg></span>
                 </div>
                 
                 <img
                   src={users[1].pfpUrl}
                   width={80}
                   height={80}
-                  className="object-cover rounded-full relative left-4 top-6"
+                  className="info-pfp-img"
                 />
 
               </div>
-
-              <div className="w-full flex-1  flex flex-col gap-3">
-                <span className="mx-4 mt-11">
-                  <h1 className="text-white font-bold text-lg">{users[1].displayname}</h1>
-                  <h2 className="text-white text-sm">{users[1].username}</h2>
+              
+              <div className="info-body">
+                <span className="alias-wrapper">
+                  <h1 className="info-displayname">{users[1].displayname}</h1>
+                  <h2 className="info-username">{users[1].username}</h2>
                 </span>
 
-                <span className="mx-4 w-[90%] h-fit rounded-lg flex flex-col px-3 py-3 gap-3 bg-gray-4">
-                  <h1 className="text-white text-xs font-semibold">Bio</h1>
-                  <h2 className="text-white text-xs font-semibold">
+                <span className="info-wrapper">
+                  <h1 className="info-label">Bio</h1>
+                  <h2 className="info-label">
                     {users[1].bio}
                   </h2>
 
-                  <h1 className="text-white text-xs font-semibold">Member Since</h1>
-                  <h2 className="text-white text-xs font-semibold">
+                  <h1 className="info-label">Member Since</h1>
+                  <h2 className="info-label">
                     {users[1].dateJoined.toLocaleString('default', { month: 'long' })} {users[1].dateJoined.getDate()}, {users[1].dateJoined.getFullYear()}
                   </h2>
                 </span>
 
-                <span className="w-full h-fit flex flex-col mt-auto mb-3">
-                  <hr className="mb-3 border-gray-5"/>
-                  <h1 className="w-full text-center text-sm text-gray-1">View Full Profile</h1>
+                <span className="profile-footer">
+                  <hr className="profile-ruler"/>
+                  <h1 className="view-profile">View Full Profile</h1>
                 </span>
               </div>
 

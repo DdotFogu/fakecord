@@ -7,15 +7,15 @@ type DmTabProps = {
 function DmTab({bgColor = "#FFFFFF", imgUrl, name}: DmTabProps) {
   return (
     <div
-      className="w-full h-[42.01px] rounded-lg flex flex=row items-center px-2 min-h-[42.01px]"
+      className="dm-tab"
       style={{ backgroundColor: bgColor }}
     >
       <img 
       src={imgUrl} 
       width={32} 
-      className="rounded-2xl object-cover" />
+      className="dm-pfp" />
 
-      <p className="ml-2.5 text-gray-300 font-semibold">{name ? name : "NO DISPLAY"}</p>
+      <p className="dm-title">{name ? name : "NO DISPLAY"}</p>
     </div>
   );
 }

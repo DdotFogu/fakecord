@@ -9,14 +9,14 @@ type ServerButtonProps = {
 function ServerButton({ bgColor = "#121213", serverIcon = defaultIcon, iconSize = 40}: ServerButtonProps) {
   return (
     <div
-      className="h-[40px] w-[40px] rounded-xl overflow-hidden flex justify-center items-center min-h-[40px] min-w-[40px]"
+      className="server-btn"
       style={{ backgroundColor: bgColor }}
     >
       <img
         src={serverIcon}
         width={iconSize}
         height={iconSize}
-        className="object-cover"
+        className="server-pfp"
         style={{ width: iconSize, height : iconSize}}
       />
     </div>

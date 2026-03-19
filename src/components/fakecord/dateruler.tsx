@@ -8,10 +8,10 @@ function dateruler({date = new Date(2025, 6, 4)}: daterulerProps) {
   
   return (
     <>
-    <div className="flex flex-row items-center justify-center gap-1 w-full mt-2.5">
-      <hr className="w-full border-light-3"/>
-      <h1 className="text-gray-1 text-xs w-fit whitespace-nowrap">{month} {date.getDate()}, {date.getFullYear()}</h1>
-      <hr className="w-full border-light-3"/>
+    <div className="date-ruler-root">
+      <hr className="date-ruler"/>
+      <h1 className="date-text">{month} {date.getDate()}, {date.getFullYear()}</h1>
+      <hr className="date-ruler"/>
     </div>
     </>
   );
