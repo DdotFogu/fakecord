@@ -547,7 +547,7 @@
 }
 
 .chat-intro-name {
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 
     font-weight: 700;
     font-size: 30px;
@@ -557,7 +557,7 @@
 }
 
 .chat-intro-username {
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 
     font-size: 24px;
     line-height: 1.33;
@@ -566,7 +566,7 @@
 }
 
 .chat-intro-desc {
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     color: white;
 }
 
@@ -579,7 +579,7 @@
     font-size: 14px;
     line-height: 1.4;
 
-    color: wheat;
+    color: white;
 }
 
 .chat-intro-common {

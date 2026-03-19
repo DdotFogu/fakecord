@@ -29,21 +29,6 @@ html, body, #root {
   flex-direction: row;
 }
 
-@theme {
-  --color-primary: #5865F2;
-  --color-light-1: #9D9EA5;
-  --color-light-2: #222226;
-  --color-light-3: #1E1E20;
-  --color-gray-1: #73747D;
-  --color-gray-2: #121213;
-  --color-gray-3: #131416;
-  --color-gray-4: #1E1F22;
-  --color-gray-5: #2D2E32;
-  --color-dark-1: #000000;
-  --color-dark-2: #070709;
-  --color-dark-3: #0C0C0E;
-}
-
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
