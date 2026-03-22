@@ -30,7 +30,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [users, setUsers] = useState<User[]>([new User(false)]);
   const [msgs, setMsgs]   = useState<Msg[]>([new Msg(users[0])]);
   const [servers, setServers] = useState<Server[]>([new Server()]);
-  const [dms, setDms] = useState<Dm[]>([new Dm()]);
+  //const [dms, setDms] = useState<Dm[]>([new Dm()]);
 
   const addUser = () => {
     const user = new User(true);

@@ -1,24 +1,93 @@
+// Style Imports
 import "../styles/fakecord.css";
 
-import { Fragment } from "react";
+import { Fragment, useState, type ReactNode } from "react";
 import { useUsers } from "../context/AppContext";
+import { useSettings } from "../context/SettingsContext";
 import { User, Msg, Server } from "../types";
 import { Link } from "react-router-dom";
 
+// Component Imports
 import ServerButton from "../components/fakecord/serverbutton";
 import DmTab from "../components/fakecord/dmtab"; 
 import MsgContent from "../components/fakecord/msg";
 import Dateruler from "../components/fakecord/dateruler";
+import UserPresence from "../components/fakecord/userpresence";
+import FooterBtn from "../components/fakecord/footerbtn";
+import TextPopup from "../components/fakecord/textpopup";
 
+// Img Imports
 import add from "../assets/images/add.webp";
 import download from "../assets/images/download.webp"
 import discover from "../assets/images/discover.webp"
 
+// Sound Imports
+import muteon from "../assets/sounds/toggles/mute_toggle_on.mp3";
+import muteoff from "../assets/sounds/toggles/mute_toggle_off.mp3";
+import deafon from "../assets/sounds/toggles/deafen_toggle_on.mp3";
+import deafoff from "../assets/sounds/toggles/deafen_toggle_off.mp3"
+
+// Sound Objects
+const toggle_mute_on = new Audio(muteon);
+const toggle_mute_off = new Audio(muteoff);
+const toggle_deaf_on = new Audio(deafon);
+const toggle_deaf_off = new Audio(deafoff);
+
+function getPopupCenteredPos(el: HTMLElement, offset: {x:number, y:number} = {x: 0, y:0}): {x: number, y: number}{
+  const {x, y} = getElementPos(el);
+  const {width} = getElementSize(el);
+  const centerX =  x + width / 2;
+
+  return({x:centerX + offset.x, y:y + offset.y});
+}
+
+function getElementSize(e: HTMLElement): {width: number, height: number}{
+  const rect = e.getBoundingClientRect();
+  return ({
+    width: rect.width,
+    height: rect.height,
+  });
+};
+
+function getElementPos(e: HTMLElement): {x: number, y: number}{
+  const rect = e.getBoundingClientRect();
+  return({ 
+      x: rect.left, 
+      y: rect.top
+  });
+};
+
 function Fakecord() {
   const { users, msgs, servers, addMsg } = useUsers();
+  const { mute_toggle, setMuteToggle, deaf_toggle, setDeafToggle } = useSettings();
+
+  const [popup_visible, setPopupVisible] = useState<boolean>(false);
+  const [popup_position, setPopupPosition] = useState<{x: number, y: number}>({x:0, y:0});
+  const [popup_content, setPopupContent] = useState<ReactNode>(<p>camilla :3</p>);
+
+  function setPopup(visible: boolean = false, pos: {x: number, y: number} = {x:0, y:0}, content: ReactNode = <p>camilla :3</p>){
+    setPopupVisible(visible);
+    setPopupPosition(pos);  
+    setPopupContent(content);
+  }
+  
+  // TODO: MAKE IT SO DEAF WILL ALSO TOGGLE MUTE BUT IT WONT UNMUTE ON UNDEAF IF WAS MUTED BEFORE
+
+  function handleMuteToggle(){
+    setMuteToggle(mute_toggle ? false : true)
+    mute_toggle ? toggle_mute_off.play() : toggle_mute_on.play();
+  }
+
+  function handleDeafToggle(){
+    setDeafToggle(deaf_toggle ? false : true)
+    deaf_toggle ? toggle_deaf_off.play() : toggle_deaf_on.play();
+  }
 
   return (
     <>
+      {/* Universal Text Popup */}
+      <TextPopup pos={popup_position} content={popup_content} visible={popup_visible}/>
+
       {/* Top Header */}
       <header className="header-root">
         <span className="header-title">       
@@ -41,25 +110,54 @@ function Fakecord() {
             height={32}
             className="pfp-img"
           />
+          <span className="footer-presence">
+            <UserPresence presence={users[0].getPresence()} size={16}/>
+          </span>
           <span className="footer-user-info">
-            <p className="footer-user-name">{users[0].displayname}</p>
-            <p className="footer-user-status">Online</p>
+            <p className="footer-user-display">{users[0].getDisplay()}</p>
+            <span className="footer-hover-wrapper">
+              <p className="footer-user-presence">{users[0].getPresence()}</p>
+              <p className="footer-user-name">{users[0].getName()}</p>
+            </span>
           </span>
         </div>
 
-        <span className="footer-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5"><path d="M395-435q-35-35-35-85v-240q0-50 35-85t85-35q50 0 85 35t35 85v240q0 50-35 85t-85 35q-50 0-85-35Zm45 315v-123q-104-14-172-93t-68-184h80q0 83 58.5 141.5T480-320q83 0 141.5-58.5T680-520h80q0 105-68 184t-172 93v123h-80Z"/></svg>
-          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg>
-        </span>
+        <FooterBtn 
+          onBtnEnter={(e)=>{
+            setPopup(true, getPopupCenteredPos(e.currentTarget as HTMLElement, {x:0, y:-45}), <p className="footer-icon-popup">Mute</p>)
+          }}
+          onBtnExit={() => setPopup()}
+          onBtnClick={() => handleMuteToggle()}
+          onDropDownEnter={(e)=>{
+            setPopup(true, getPopupCenteredPos(e.currentTarget as HTMLElement, {x:0, y:-45}), <p className="footer-icon-popup">Input Options</p>)
+          }}
+          onDropDownExit={() => setPopup()}
+          dropdown={true} 
+          svg={<svg className="mic-icon" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="20" preserveAspectRatio="xMidYMid meet" style={{transform:"translate3d(0px,0px,0px)",contentVisibility:"visible"}}><defs><clipPath id="__lottie_element_5"><rect width="24" height="24" x="0" y="0"></rect></clipPath><clipPath id="__lottie_element_7"><path d="M0,0 L600,0 L600,600 L0,600z"></path></clipPath><clipPath id="__lottie_element_11"><path d="M0,0 L1000,0 L1000,1000 L0,1000z"></path></clipPath><clipPath id="__lottie_element_18"><path d="M0,0 L1000,0 L1000,1000 L0,1000z"></path></clipPath><clipPath id="__lottie_element_28"><path d="M0,0 L1000,0 L1000,1000 L0,1000z"></path></clipPath><mask id="__lottie_element_29"><rect fill="#ffffff" width="600" height="600" transform="matrix(1,0,0,1,200,200)"></rect><path fill="#000000" clipRule="nonzero" d=" M1025.219970703125,-87.2040023803711 C1025.219970703125,-87.2040023803711 853.697021484375,87.75 853.697021484375,87.75 C853.697021484375,87.75 789.760009765625,155.23199462890625 839.1370239257812,204.86199951171875 C893,259 957.6799926757812,191.05599975585938 957.6799926757812,191.05599975585938 C957.6799926757812,191.05599975585938 1129.2030029296875,16.101999282836914 1129.2030029296875,16.101999282836914 C1129.2030029296875,16.101999282836914 1212,-66 1160.2149658203125,-115.55400085449219 C1108.781005859375,-164.77200317382812 1025.219970703125,-87.2040023803711 1025.219970703125,-87.2040023803711" fillOpacity="1"></path><path fill="#ffffff" clipRule="nonzero" d=" M698,405 C698,405 642,405 642,405 C642,405 642,479 642,479 C642,479 698,479 698,479 C698,479 698,405 698,405" fillOpacity="1"></path></mask></defs><g clipPath="url(#__lottie_element_5)"><g clipPath="url(#__lottie_element_7)" transform="matrix(0.03999999910593033,0,0,0.03999999910593033,0,0)" opacity="1" style={{display:"block"}}><g clipPath="url(#__lottie_element_28)" transform="matrix(1,0,0,1,-200,-200)" opacity="1" style={{display:"block"}}><g mask="url(#__lottie_element_29)"><g style={{display:"none"}} transform="matrix(-25,0,0,25,800,173)" opacity="1"><g opacity="1" transform="matrix(1,0,0,1,12,8.5)"><path fill="oklab(0.700617 0.00173205 -0.0100245)" fillOpacity="1" d=" M-4,-1.3799999952316284 C-4,-3.5889999866485596 -2.2090001106262207,-5.380000114440918 0,-5.380000114440918 C2.2090001106262207,-5.380000114440918 4,-3.5889999866485596 4,-1.3799999952316284 C4,-1.3799999952316284 4,2.509999990463257 4,2.509999990463257 C4,4.718999862670898 2.2090001106262207,6.5 0,6.5 C-2.2090001106262207,6.5 -4,4.718999862670898 -4,2.509999990463257 C-4,2.509999990463257 -4,-1.3799999952316284 -4,-1.3799999952316284z"></path></g><g opacity="1" transform="matrix(1,0,0,1,12,14)"><path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="4" stroke="oklab(0.700617 0.00173205 -0.0100245)" strokeOpacity="1" strokeWidth="2px" d=" M-7,-2.990000009536743 C-7,0.8759999871253967 -3.865999937057495,4.010000228881836 0,4.010000228881836 C3.865999937057495,4.010000228881836 7,0.8759999871253967 7,-2.990000009536743"></path></g><g opacity="1" transform="matrix(1,0,0,1,12,20)"><path fill="oklab(0.700617 0.00173205 -0.0100245)" fillOpacity="1" d=" M-1,-2 C-1,-2.2760000228881836 -0.7760000228881836,-2.5 -0.5,-2.5 C-0.5,-2.5 0.5,-2.5 0.5,-2.5 C0.7760000228881836,-2.5 1,-2.2760000228881836 1,-2 C1,-2 1,2 1,2 C1,2.2760000228881836 0.7760000228881836,2.5 0.5,2.5 C0.5,2.5 -0.5,2.5 -0.5,2.5 C-0.7760000228881836,2.5 -1,2.2760000228881836 -1,2 C-1,2 -1,-2 -1,-2z"></path></g><g opacity="1" transform="matrix(1,0,0,1,12,22)"><path fill="oklab(0.700617 0.00173205 -0.0100245)" fillOpacity="1" d=" M3,-1 C3.552000045776367,-1 4,-0.5519999861717224 4,0 C4,0.5519999861717224 3.552000045776367,1 3,1 C3,1 -3,1 -3,1 C-3.552000045776367,1 -4,0.5519999861717224 -4,0 C-4,-0.5519999861717224 -3.552000045776367,-1 -3,-1 C-3,-1 3,-1 3,-1z"></path></g></g><g transform="matrix(-25,0,0,25,800,173)" opacity="1" style={{display:"block"}}><g opacity="1" transform="matrix(1,0,0,1,12,8.5)"><path fill="oklab(0.700617 0.00173205 -0.0100245)" fillOpacity="1" d=" M-4,-1.4600000381469727 C-4,-3.6689999103546143 -2.2090001106262207,-5.460000038146973 0,-5.460000038146973 C2.2090001106262207,-5.460000038146973 4,-3.6689999103546143 4,-1.4600000381469727 C4,-1.4600000381469727 4,2.5 4,2.5 C4,4.709000110626221 2.2090001106262207,6.5 0,6.5 C-2.2090001106262207,6.5 -4,4.709000110626221 -4,2.5 C-4,2.5 -4,-1.4600000381469727 -4,-1.4600000381469727z"></path></g><g opacity="1" transform="matrix(1,0,0,1,12,14)"><path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="4" stroke="oklab(0.700617 0.00173205 -0.0100245)" strokeOpacity="1" strokeWidth="2px" d=" M-7,-3 C-7,0.8659999966621399 -3.865999937057495,4 0,4 C3.865999937057495,4 7,0.8659999966621399 7,-3"></path></g><g opacity="1" transform="matrix(1,0,0,1,12,20)"><path fill="oklab(0.700617 0.00173205 -0.0100245)" fillOpacity="1" d=" M-1,-2 C-1,-2.2760000228881836 -0.7760000228881836,-2.5 -0.5,-2.5 C-0.5,-2.5 0.5,-2.5 0.5,-2.5 C0.7760000228881836,-2.5 1,-2.2760000228881836 1,-2 C1,-2 1,2 1,2 C1,2.2760000228881836 0.7760000228881836,2.5 0.5,2.5 C0.5,2.5 -0.5,2.5 -0.5,2.5 C-0.7760000228881836,2.5 -1,2.2760000228881836 -1,2 C-1,2 -1,-2 -1,-2z"></path></g><g opacity="1" transform="matrix(1,0,0,1,12,22)"><path fill="oklab(0.700617 0.00173205 -0.0100245)" fillOpacity="1" d=" M3,-1 C3.552000045776367,-1 4,-0.5519999861717224 4,0 C4,0.5519999861717224 3.552000045776367,1 3,1 C3,1 -3,1 -3,1 C-3.552000045776367,1 -4,0.5519999861717224 -4,0 C-4,-0.5519999861717224 -3.552000045776367,-1 -3,-1 C-3,-1 3,-1 3,-1z"></path></g></g></g></g><g clipPath="url(#__lottie_element_18)" transform="matrix(1,0,0,1,-200,-200)" opacity="1" style={{display:"none"}}><g transform="matrix(25,0,0,25,200,200)" opacity="1" style={{display:"none"}}><g opacity="1" transform="matrix(1,0,0,1,12,12)"><path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="4" stroke="oklab(0.700617 0.00173205 -0.0100245)" strokeOpacity="1" strokeWidth="2px" d=" M9.967000007629395,-9.967000007629395 C9.98900032043457,-9.98900032043457 10,-10 10,-10"></path></g></g><g style={{display:"none"}} transform="matrix(25,0,0,25,200,200)" opacity="1"><g opacity="1" transform="matrix(1,0,0,1,12,12)"><path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="4" stroke="oklab(0.700617 0.00173205 -0.0100245)" strokeOpacity="1" strokeWidth="2px" d=" M-10,10 C-10,10 10,-10 10,-10"></path></g></g></g><g clipPath="url(#__lottie_element_11)" style={{display:"none"}} transform="matrix(1,0,0,1,-200,-200)" opacity="1"><g style={{display:"block"}} transform="matrix(25,0,0,25,200,200)" opacity="1"><g opacity="1" transform="matrix(1,0,0,1,12,12)"><path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="4" stroke="oklab(0.700617 0.00173205 -0.0100245)" strokeOpacity="1" strokeWidth="2px" d=" M-10,10 C-10,10 10,-10 10,-10"></path></g></g></g></g></g></svg>}
+        />
 
-        <span className="footer-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5"><path d="M360-120H200q-33 0-56.5-23.5T120-200v-280q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480v280q0 33-23.5 56.5T760-120H600v-320h160v-40q0-117-81.5-198.5T480-760q-117 0-198.5 81.5T200-480v40h160v320Z"/></svg>
-          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg>
-        </span>
+        <FooterBtn 
+          onBtnEnter={(e)=>{
+            setPopup(true, getPopupCenteredPos(e.currentTarget as HTMLElement, {x:0, y:-45}), <p className="footer-icon-popup">Deafen</p>)
+          }}
+          onBtnExit={() => setPopup()}
+          onBtnClick={() => handleDeafToggle()}
+          onDropDownEnter={(e)=>{
+            setPopup(true, getPopupCenteredPos(e.currentTarget as HTMLElement, {x:0, y:-45}), <p className="footer-icon-popup">Output Options</p>)
+          }}
+          onDropDownExit={() => setPopup()}
+          dropdown={true} 
+          svg={<svg className="headphone-icon" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="20" preserveAspectRatio="xMidYMid meet" style={{transform:"translate3d(0px,0px,0px)",contentVisibility:"visible"}}><defs><clipPath id="__lottie_element_42"><rect width="24" height="24" x="0" y="0"></rect></clipPath><clipPath id="__lottie_element_44"><path d="M0,0 L600,0 L600,600 L0,600z"></path></clipPath><clipPath id="__lottie_element_51"><path d="M0,0 L1000,0 L1000,1000 L0,1000z"></path></clipPath><clipPath id="__lottie_element_61"><path d="M0,0 L1000,0 L1000,1000 L0,1000z"></path></clipPath><mask id="__lottie_element_62"><rect fill="#ffffff" width="600" height="600" transform="matrix(0.9615384936332703,0,0,0.9615384936332703,211.53846740722656,211.53846740722656)"></rect><path fill="#000000" clipRule="nonzero" d=" M67.22000122070312,823.7960205078125 C67.22000122070312,823.7960205078125 -126.3030014038086,1017.75 -126.3030014038086,1017.75 C-126.3030014038086,1017.75 -76.63800048828125,1067.092041015625 -76.63800048828125,1067.092041015625 C-76.63800048828125,1067.092041015625 -22.31999969482422,1121.0560302734375 -22.31999969482422,1121.0560302734375 C-22.31999969482422,1121.0560302734375 171.2030029296875,927.1019897460938 171.2030029296875,927.1019897460938 C171.2030029296875,927.1019897460938 239.677001953125,860.3419799804688 186.88099670410156,810.114013671875 C130,756 67.22000122070312,823.7960205078125 67.22000122070312,823.7960205078125" fillOpacity="1"></path></mask><clipPath id="__lottie_element_65"><path d="M0,0 L1000,0 L1000,1000 L0,1000z"></path></clipPath><clipPath id="__lottie_element_72"><path d="M0,0 L1000,0 L1000,1000 L0,1000z"></path></clipPath><mask id="__lottie_element_80"><rect fill="#ffffff" width="600" height="600" transform="matrix(0.9615384936332703,0,0,0.9615384936332703,211.53846740722656,211.53846740722656)"></rect><path fill="#000000" clipRule="nonzero" d=" M67.44400024414062,823.5819702148438 C67.44400024414062,823.5819702148438 -126.11100006103516,1017.5659790039062 -126.11100006103516,1017.5659790039062 C-126.11100006103516,1017.5659790039062 -76.44599914550781,1066.907958984375 -76.44599914550781,1066.907958984375 C-76.44599914550781,1066.907958984375 -22.128000259399414,1120.8719482421875 -22.128000259399414,1120.8719482421875 C-22.128000259399414,1120.8719482421875 171.427001953125,926.8880004882812 171.427001953125,926.8880004882812 C171.427001953125,926.8880004882812 239.9010009765625,860.1279907226562 187.10499572753906,809.9000244140625 C130.2239990234375,755.7860107421875 67.44400024414062,823.5819702148438 67.44400024414062,823.5819702148438" fillOpacity="1"></path></mask><clipPath id="__lottie_element_83"><path d="M0,0 L1000,0 L1000,1000 L0,1000z"></path></clipPath><clipPath id="__lottie_element_90"><path d="M0,0 L1000,0 L1000,1000 L0,1000z"></path></clipPath><clipPath id="__lottie_element_79"><path d="M0,0 L1000,0 L1000,1000 L0,1000z"></path></clipPath></defs><g clipPath="url(#__lottie_element_42)"><g clipPath="url(#__lottie_element_44)" transform="matrix(0.03999999910593033,0,0,0.03999999910593033,0,0)" opacity="1" style={{display:"block"}}><g clipPath="url(#__lottie_element_79)" transform="matrix(1.0399999618530273,0,0,1.0399999618530273,-220,-220)" opacity="1" style={{display:"none"}}><g mask="url(#__lottie_element_80)"><g clipPath="url(#__lottie_element_90)" transform="matrix(1,0,0,1,0,0)" opacity="1" style={{display:"block"}}><g transform="matrix(25,0,0,25,200,200)" opacity="1" style={{display:"block"}}><g opacity="1" transform="matrix(1,0,0,1,12,12.288000106811523)"><path fill="oklab(0.700617 0.00173205 -0.0100245)" fillOpacity="1" d=" M-8.000072479248047,-0.2881828546524048 C-7.999939918518066,-4.706087589263916 -4.418000221252441,-8.288000106811523 0,-8.288000106811523 C4.418000221252441,-8.288000106811523 7.999929904937744,-4.706122875213623 8.000077247619629,-0.2881803512573242 C8.000102043151855,0.40481603145599365 7.954133987426758,1.0718117952346802 7.854161262512207,1.7118114233016968 C7.854161262512207,1.7118114233016968 6.000174522399902,1.7118886709213257 6.000174522399902,1.7118886709213257 C5.05618143081665,1.7119280099868774 4.167206287384033,2.156961679458618 3.6002418994903564,2.911979913711548 C3.6002418994903564,2.911979913711548 1.6273654699325562,5.542043209075928 1.6273654699325562,5.542043209075928 C1.1583948135375977,6.168058395385742 1.03643000125885,6.988057613372803 1.3044586181640625,7.72304105758667 C1.8895213603973389,9.332005500793457 3.8875467777252197,10.287915229797363 5.482487678527832,9.131856918334961 C8.839362144470215,6.700735092163086 10.00019359588623,3.3797173500061035 10.000062942504883,-0.28826361894607544 C9.999899864196777,-5.811119556427002 5.5229997634887695,-10.288000106811523 0,-10.288000106811523 C-5.5229997634887695,-10.288000106811523 -9.99986457824707,-5.81110954284668 -10.000057220458984,-0.2882695198059082 C-10.000213623046875,3.3797030448913574 -8.83936882019043,6.700726509094238 -5.482500076293945,9.131853103637695 C-3.8875625133514404,10.28791332244873 -1.8895366191864014,9.33200740814209 -1.304471492767334,7.7230448722839355 C-1.036441683769226,6.988062381744385 -1.1584053039550781,6.168063640594482 -1.627374529838562,5.54204797744751 C-1.627374529838562,5.54204797744751 -3.600245475769043,2.911982774734497 -3.600245475769043,2.911982774734497 C-4.167208194732666,2.156964063644409 -5.056182384490967,1.7119290828704834 -6.0001749992370605,1.7118881940841675 C-6.0001749992370605,1.7118881940841675 -7.854179859161377,1.7118425369262695 -7.854179859161377,1.7118425369262695 C-7.954162120819092,1.071841835975647 -8.000097274780273,0.40481364727020264 -8.000072479248047,-0.2881828546524048z"></path></g></g></g><g clipPath="url(#__lottie_element_83)" style={{display:"none"}}><g style={{display:"none"}}><g><path></path></g></g></g></g></g><g clipPath="url(#__lottie_element_61)" style={{display:"block"}} transform="matrix(1.0399999618530273,0,0,1.0399999618530273,-220,-220)" opacity="1"><g mask="url(#__lottie_element_62)"><g clipPath="url(#__lottie_element_72)" style={{display:"block"}} transform="matrix(1,0,0,1,0,0)" opacity="1"><g style={{display:"block"}} transform="matrix(25,0,0,25,200,200)" opacity="1"><g opacity="1" transform="matrix(1,0,0,1,12,12.288000106811523)"><path fill="oklab(0.700617 0.00173205 -0.0100245)" fillOpacity="1" d=" M-8,-0.2879999876022339 C-8,-4.705999851226807 -4.418000221252441,-8.288000106811523 0,-8.288000106811523 C4.418000221252441,-8.288000106811523 8,-4.705999851226807 8,-0.2879999876022339 C8,0.4050000011920929 7.953999996185303,1.0720000267028809 7.854000091552734,1.7120000123977661 C7.854000091552734,1.7120000123977661 6,1.7120000123977661 6,1.7120000123977661 C5.056000232696533,1.7120000123977661 4.166999816894531,2.1570000648498535 3.5999999046325684,2.9119999408721924 C3.5999999046325684,2.9119999408721924 1.6269999742507935,5.541999816894531 1.6269999742507935,5.541999816894531 C1.1579999923706055,6.168000221252441 1.0360000133514404,6.98799991607666 1.3040000200271606,7.7230000495910645 C1.8890000581741333,9.331999778747559 3.88700008392334,10.288000106811523 5.48199987411499,9.131999969482422 C8.83899974822998,6.701000213623047 10,3.380000114440918 10,-0.2879999876022339 C10,-5.810999870300293 5.5229997634887695,-10.288000106811523 0,-10.288000106811523 C-5.5229997634887695,-10.288000106811523 -10,-5.810999870300293 -10,-0.2879999876022339 C-10,3.380000114440918 -8.83899974822998,6.701000213623047 -5.48199987411499,9.131999969482422 C-3.88700008392334,10.288000106811523 -1.8890000581741333,9.331999778747559 -1.3040000200271606,7.7230000495910645 C-1.0360000133514404,6.98799991607666 -1.1579999923706055,6.168000221252441 -1.6269999742507935,5.541999816894531 C-1.6269999742507935,5.541999816894531 -3.5999999046325684,2.9119999408721924 -3.5999999046325684,2.9119999408721924 C-4.166999816894531,2.1570000648498535 -5.056000232696533,1.7120000123977661 -6,1.7120000123977661 C-6,1.7120000123977661 -7.854000091552734,1.7120000123977661 -7.854000091552734,1.7120000123977661 C-7.953999996185303,1.0720000267028809 -8,0.4050000011920929 -8,-0.2879999876022339z"></path></g></g></g><g clipPath="url(#__lottie_element_65)" style={{display:"none"}}><g style={{display:"none"}}><g><path></path></g></g></g></g></g><g clipPath="url(#__lottie_element_51)" transform="matrix(1,0,0,1,-200,-200)" opacity="1" style={{display:"none"}}><g style={{display:"none"}}><g><path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="4"></path></g></g><g style={{display:"none"}}><g><path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="4"></path></g></g></g><g style={{display:"none"}}><g><path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="4"></path></g></g></g></g></svg>}
+        />
 
-        <span className="footer-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="24px" fill="#9D9EA5"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm112-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Z"/></svg>
-        </span>
+        <FooterBtn 
+          onBtnEnter={(e)=>{
+            setPopup(true, getPopupCenteredPos(e.currentTarget as HTMLElement, {x:0, y:-45}), <p className="footer-icon-popup">User Settings</p>)
+          }}
+          onBtnExit={() => setPopup()} 
+          dropdown={false}
+          svg={<svg className="setting-icon" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="20" preserveAspectRatio="xMidYMid meet"><defs><clipPath id="__lottie_element_97"><rect width="24" height="24" x="0" y="0"></rect></clipPath><clipPath id="__lottie_element_99"><path d="M0,0 L600,0 L600,600 L0,600z"></path></clipPath></defs><g clip-path="url(#__lottie_element_97)"><g clip-path="url(#__lottie_element_99)" transform="matrix(0.03999999910593033,0,0,0.03999999910593033,0,0)" opacity="1"><g transform="matrix(25,0,0,25,300,300)" opacity="1"><g opacity="1" transform="matrix(1,0,0,1,0,0)"><path fill="oklab(0.700617 0.00173205 -0.0100245)" fill-opacity="1" d=" M-1.4420000314712524,-10.906000137329102 C-1.8949999809265137,-10.847000122070312 -2.1470000743865967,-10.375 -2.078000068664551,-9.92300033569336 C-1.899999976158142,-8.756999969482422 -2.265000104904175,-7.7210001945495605 -3.061000108718872,-7.390999794006348 C-3.8570001125335693,-7.060999870300293 -4.8480000495910645,-7.534999847412109 -5.546000003814697,-8.484999656677246 C-5.816999912261963,-8.852999687194824 -6.329999923706055,-9.008999824523926 -6.691999912261963,-8.730999946594238 C-7.458000183105469,-8.142999649047852 -8.142999649047852,-7.458000183105469 -8.730999946594238,-6.691999912261963 C-9.008999824523926,-6.329999923706055 -8.852999687194824,-5.816999912261963 -8.484999656677246,-5.546000003814697 C-7.534999847412109,-4.8480000495910645 -7.060999870300293,-3.8570001125335693 -7.390999794006348,-3.061000108718872 C-7.7210001945495605,-2.265000104904175 -8.756999969482422,-1.899999976158142 -9.92300033569336,-2.078000068664551 C-10.375,-2.1470000743865967 -10.847000122070312,-1.8949999809265137 -10.906000137329102,-1.4420000314712524 C-10.968000411987305,-0.9700000286102295 -11,-0.48899999260902405 -11,0 C-11,0.48899999260902405 -10.968000411987305,0.9700000286102295 -10.906000137329102,1.4420000314712524 C-10.847000122070312,1.8949999809265137 -10.375,2.1470000743865967 -9.92300033569336,2.078000068664551 C-8.756999969482422,1.899999976158142 -7.7210001945495605,2.265000104904175 -7.390999794006348,3.061000108718872 C-7.060999870300293,3.8570001125335693 -7.534999847412109,4.8470001220703125 -8.484999656677246,5.546000003814697 C-8.852999687194824,5.816999912261963 -9.008999824523926,6.328999996185303 -8.730999946594238,6.691999912261963 C-8.142999649047852,7.458000183105469 -7.458000183105469,8.142999649047852 -6.691999912261963,8.730999946594238 C-6.329999923706055,9.008999824523926 -5.816999912261963,8.852999687194824 -5.546000003814697,8.484999656677246 C-4.8480000495910645,7.534999847412109 -3.8570001125335693,7.060999870300293 -3.061000108718872,7.390999794006348 C-2.265000104904175,7.7210001945495605 -1.899999976158142,8.756999969482422 -2.078000068664551,9.92300033569336 C-2.1470000743865967,10.375 -1.8949999809265137,10.847000122070312 -1.4420000314712524,10.906000137329102 C-0.9700000286102295,10.968000411987305 -0.48899999260902405,11 0,11 C0.48899999260902405,11 0.9700000286102295,10.968000411987305 1.4420000314712524,10.906000137329102 C1.8949999809265137,10.847000122070312 2.1470000743865967,10.375 2.078000068664551,9.92300033569336 C1.899999976158142,8.756999969482422 2.2660000324249268,7.7210001945495605 3.062000036239624,7.390999794006348 C3.8580000400543213,7.060999870300293 4.8480000495910645,7.534999847412109 5.546000003814697,8.484999656677246 C5.816999912261963,8.852999687194824 6.328999996185303,9.008999824523926 6.691999912261963,8.730999946594238 C7.458000183105469,8.142999649047852 8.142999649047852,7.458000183105469 8.730999946594238,6.691999912261963 C9.008999824523926,6.328999996185303 8.852999687194824,5.816999912261963 8.484999656677246,5.546000003814697 C7.534999847412109,4.8480000495910645 7.060999870300293,3.8570001125335693 7.390999794006348,3.061000108718872 C7.7210001945495605,2.265000104904175 8.756999969482422,1.899999976158142 9.92300033569336,2.078000068664551 C10.375,2.1470000743865967 10.847000122070312,1.8949999809265137 10.906000137329102,1.4420000314712524 C10.968000411987305,0.9700000286102295 11,0.48899999260902405 11,0 C11,-0.48899999260902405 10.968000411987305,-0.9700000286102295 10.906000137329102,-1.4420000314712524 C10.847000122070312,-1.8949999809265137 10.375,-2.1470000743865967 9.92300033569336,-2.078000068664551 C8.756999969482422,-1.899999976158142 7.7210001945495605,-2.265000104904175 7.390999794006348,-3.061000108718872 C7.060999870300293,-3.8570001125335693 7.534999847412109,-4.8480000495910645 8.484999656677246,-5.546000003814697 C8.852999687194824,-5.816999912261963 9.008999824523926,-6.329999923706055 8.730999946594238,-6.691999912261963 C8.142999649047852,-7.458000183105469 7.458000183105469,-8.142999649047852 6.691999912261963,-8.730999946594238 C6.328999996185303,-9.008999824523926 5.817999839782715,-8.852999687194824 5.546999931335449,-8.484999656677246 C4.848999977111816,-7.534999847412109 3.8580000400543213,-7.060999870300293 3.062000036239624,-7.390999794006348 C2.2660000324249268,-7.7210001945495605 1.9010000228881836,-8.756999969482422 2.0789999961853027,-9.92300033569336 C2.1480000019073486,-10.375 1.8949999809265137,-10.847000122070312 1.4420000314712524,-10.906000137329102 C0.9700000286102295,-10.968000411987305 0.48899999260902405,-11 0,-11 C-0.48899999260902405,-11 -0.9700000286102295,-10.968000411987305 -1.4420000314712524,-10.906000137329102z M4,0 C4,2.2090001106262207 2.2090001106262207,4 0,4 C-2.2090001106262207,4 -4,2.2090001106262207 -4,0 C-4,-2.2090001106262207 -2.2090001106262207,-4 0,-4 C2.2090001106262207,-4 4,-2.2090001106262207 4,0z"></path></g></g></g></g></svg>}
+        />
       </footer>
       
       <span className="app-body">
@@ -86,7 +184,7 @@ function Fakecord() {
           <div className="dms-root">
             
             <div className="dms-header">
-              <span className="find-convo">Find or start an conversation</span>
+              <span className="find-convo">Find or start a conversation</span>
             </div>
 
             <hr className="common-ruler"/>
@@ -123,7 +221,7 @@ function Fakecord() {
                 {users.map((user: User, index: number) => {
                   const showRule : boolean = user.dm;
                   
-                  if(showRule){return(<DmTab bgColor={index === 1 ? "#38393E" : "#FFFFF"} imgUrl={user.pfpUrl} name={user.displayname} key={index}/>)}
+                  if(showRule){return(<DmTab bgColor={index === 1 ? "#38393E" : "#FFFFF"} imgUrl={user.getPfp()} name={user.getDisplay()} presence={user.getPresence()} key={index}/>)}
                 })}
               </span>
             </span>
@@ -141,6 +239,11 @@ function Fakecord() {
                 height={20}
                 className="chat-header-pfp"
               />
+              <span 
+                className="chat-root-presence"
+              >
+                <UserPresence presence={users[1].getPresence()} size={10}/>
+              </span>
               <p className="chat-header-name">{users[1].displayname}</p>
             </span>
             
@@ -242,10 +345,14 @@ function Fakecord() {
                 
                 <img
                   src={users[1].pfpUrl}
-                  width={80}
-                  height={80}
+                  width={92}
+                  height={92}
                   className="info-pfp-img"
                 />
+
+                <span className="info-presence">
+                  <UserPresence presence={users[1].getPresence()}/>
+                </span>
 
               </div>
               
@@ -256,7 +363,7 @@ function Fakecord() {
                 </span>
 
                 <span className="info-wrapper">
-                  <h1 className="info-label">Bio</h1>
+                  {users[1].bio && <h1 className="info-label">Bio</h1>}
                   <h2 className="info-label">
                     {users[1].bio}
                   </h2>

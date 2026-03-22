@@ -16,7 +16,7 @@ function UserDetails({userIdx}: detailProps) {
     const dateJoined = user.getShortDate();
 
     return (
-    <span className='flex-row userdetails-wrapper'>
+    <span className='userdetails-wrapper'>
         <h1>{userIdx}</h1>
         <div className='details-list'>
             <input 

@@ -11,10 +11,10 @@
 
 .footer-root {
     width: 416px;
-    height: 60px;
+    height: 58px;
     margin: 8px;
     padding: 6px;
-    padding-right: 14px;
+    padding-right: 12px;
 
     display: flex;
     flex-direction: row;
@@ -22,7 +22,7 @@
     justify-content: center;
     align-items: center;
 
-    background-color: var(--color-dark-3);
+    background-color: var(--color-dark-2);
 
     position: absolute;
     bottom: 0;
@@ -31,17 +31,6 @@
     border-style: solid;
     border-color: var(--color-light-2);
     border-radius: 8px;
-}
-
-.footer-btn {
-    width: fit-content;
-    height: 80%;
-
-    display: flex;
-    align-items: center;
-
-    border-radius: 8px;
-    border-style: solid;
 }
 
 .servers-root {
@@ -236,6 +225,7 @@
     
     font-size: 18px;
     line-height: 28px;
+    font-weight: 700;
 }
 
 .info-username {
@@ -264,8 +254,10 @@
     object-fit: cover;
     border-radius: 9999px;
     position: relative;
-    left: 16px;
-    top: 24px;
+    left: 10px;
+    top: 18px;
+    padding: 8px;
+    background-color: var(--color-gray-3);
 }
 
 .info-button {
@@ -345,26 +337,59 @@
     justify-content: start;
     align-items: center;
     gap: 8px;
+
+    background-color: var(--color-dark-2);
+    transition: background-color .2s ease;
+}
+
+.footer-user:hover {
+    background-color: var(--color-gray-5);
+    transition: background-color .2s ease;
 }
 
 .footer-user-info {
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-bottom: 7px;
 
     display: flex;
     flex-direction: column;
 }
 
-.footer-user-name {
+.footer-user-display {
     color: white;
     font-weight: 600;
 }
 
-.footer-user-status {
-    color: white;
+.footer-user-presence {
+    color: var(--color-light-1);
     font-size: 12px;
-    line-height: 1.33;
+    line-height: 1;
     vertical-align: top;
+    position: relative;
+    transition: transform 0.1s;
+}
+
+.footer-user-name {
+    color: var(--color-light-1);
+    font-size: 12px;
+    line-height: 1;
+    vertical-align: top;
+    position: relative;
+    transition: transform 0.1s;
+}
+
+.footer-hover-wrapper {
+    height: 10px;
+    overflow: hidden;
+}
+
+.footer-user:hover .footer-user-presence{
+    transform: translateY(-13px);
+    transition: transform 0.2s;
+}
+
+.footer-user:hover .footer-user-name{
+    transform: translateY(-13px);
+    transition: transform 0.2s;
 }
 
 .app-body {
@@ -453,6 +478,8 @@
 
     border-bottom: 1px solid var(--color-light-2);
     border-top: 1px solid var(--color-light-2);
+
+    position: relative;
 }
 
 .chat-header-user {
@@ -655,6 +682,7 @@
     align-items: center;
 
     border-radius: 8px;
+    position: relative
 }
 
 .dm-pfp {
@@ -733,4 +761,181 @@
     font-size: 12px;
     line-height: 1.333;
     overflow-wrap: break-word;
+}
+
+.info-presence {
+    background-color: var(--color-gray-3);
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    position: relative;
+    left: 70px;
+    bottom: 12px;
+    border-radius: 9999px;
+}
+
+.footer-presence {
+    background-color: var(--color-dark-2);
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    position: absolute;
+    top: 31px;
+    left: 30px;
+    
+    border-radius: 9999px;
+}
+
+.dmtab-presence {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    position: absolute;
+    top: 23px;
+    left: 28px;
+    
+    border-radius: 9999px;
+}
+
+.chat-root-presence {
+    background-color: var(--color-dark-2);
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    position: absolute;
+    top: 26px;
+    left: 24px;
+    
+    border-radius: 9999px;
+}
+
+@keyframes cog-rotate {
+    from {
+        transform: rotate(0deg); 
+    }
+    to {
+        transform: rotate(180deg); 
+    }
+}
+
+@keyframes mic-wobble {
+    0% {
+        transform: rotate(0deg); 
+    }
+    25% {
+        transform: rotate(5deg); 
+    }
+    75% {
+        transform: rotate(-5deg); 
+    }
+    100% {
+        transform: rotate(0deg); 
+    }
+}
+
+
+.footer-btn-wrapper:hover .setting-icon {
+    animation-name: cog-rotate;
+    animation-duration: 0.8s;
+    animation-timing-function: ease-in-out;
+}
+
+.footer-btn-wrapper:hover .mic-icon {
+    animation-name: mic-wobble;
+    animation-duration: 0.8s;
+    animation-timing-function: ease-in-out;
+}
+
+.footer-btn:hover path, .footer-btn:hover path  {
+    fill: white;
+    transition: 0.1s;
+}
+
+.footer-btn-wrapper {
+    width: fit-content;
+    height: fit-content;
+
+    display: flex;
+    flex-direction: row;
+    gap: 1px;
+}
+
+.footer-btn {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--color-dark-2);
+}
+
+.footer-btn:hover {
+    background-color: var(--color-gray-5);
+    transition: background-color .2s ease;
+}
+
+.footer-btn-wrapper--solo .footer-btn {
+    border-radius: 8px;
+}
+
+.footer-btn-wrapper--dropdown .footer-btn {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.footer-btn-dropdown {
+    width: 16px;
+    height: 32px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--color-dark-2);
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.footer-btn-dropdown:hover {
+    background-color: var(--color-gray-5);
+    transition: background-color .2s ease;
+}
+
+.footer-btn:hover + .footer-btn-dropdown {
+    background-color: var(--color-light-3);
+    transition: background-color .2s ease;
+} 
+
+.footer-btn:has(+ .footer-btn-dropdown:hover) {
+    background-color: var(--color-light-3);
+    transition: background-color .2s ease;
+} 
+
+.text-popup {
+    width: fit-content;
+    height: fit-content;
+    position: fixed;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 12px;
+    padding-right: 12px;
+
+    background-color: var(--color-gray-3);
+    color: white;
+
+    border: 1px;
+    border-style: solid;
+    border-color: var(--color-light-2);
+    border-radius: 8px;
+
+    z-index: 99;
+    pointer-events: none;
+}
+
+.footer-icon-popup {
+    font-size: small;
 }
